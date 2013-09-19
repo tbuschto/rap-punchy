@@ -2,12 +2,15 @@ package com.eclipsesource.rap.punchy;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -25,13 +28,18 @@ public class Presentation {
   private final Composite main;
   private Listener buttonMouseMoveListener;
   private Listener buttonMouseExitListener;
-  private Listener buttonLabelMouseHoverListener;
-  private static Composite stage;
-  private static Composite prev;
-  private static Composite next;
+  private Composite stage;
+  private Composite prev;
+  private Composite next;
+  private final List<AbstractSlide> slides;
+  private final Point minsize;
+  private int slideIndex = -1;
+  private Composite currentSlideControl;
 
-  public Presentation( Composite parent ) {
+  public Presentation( Composite parent, Point size ) {
     main = new Composite( parent, SWT.NONE );
+    minsize = size;
+    slides = new ArrayList<AbstractSlide>();
     createPrevButton( main );
     createStage( main );
     createNextButton( main );
@@ -44,12 +52,63 @@ public class Presentation {
     return main;
   }
 
+  public void start() {
+    checkNotStarted();
+    initialize();
+    showSlide( 0 );
+  }
+
   public void next() {
-    System.out.println( "next" );
+    checkStarted();
+    showSlide( slideIndex + 1 );
   }
 
   public void prev() {
-    System.out.println( "prev" );
+    checkStarted();
+    showSlide( slideIndex - 1 );
+  }
+
+  void addSlide( AbstractSlide slide ) {
+    checkNotStarted();
+    slides.add( slide );
+  }
+
+  private void initialize() {
+    // TODO Auto-generated method stub
+  }
+
+  private void checkStarted() {
+    if( slideIndex < 0 ) {
+      throw new IllegalStateException( "Operation not possible before presentation is started" );
+    }
+  }
+  private void checkNotStarted() {
+    if( slideIndex >= 0 ) {
+      throw new IllegalStateException( "Operation not possible after presentation is started" );
+    }
+  }
+
+  private void showSlide( int index ) {
+    if( currentSlideControl != null ) {
+      currentSlideControl.dispose();
+    }
+    slideIndex = index;
+    currentSlideControl = slides.get( slideIndex ).create( stage );
+    stage.layout();
+    updateNavigation();
+  }
+
+  private void updateNavigation() {
+    if( slideIndex > 0 ) {
+      enableButton( prev );
+    } else {
+      disableButton( prev );
+    }
+    if( slideIndex < slides.size() - 1 ) {
+      enableButton( next );
+    } else {
+      disableButton( next );
+    }
   }
 
   private Point computeStageSize() {
@@ -59,36 +118,43 @@ public class Presentation {
     return new Point( stageWidth, stageHeight );
   }
 
-  private static void createStage( Composite parent ) {
+  private void createStage( Composite parent ) {
     stage = new Composite( parent, SWT.NONE );
-    stage.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLUE ) );
+    stage.setLayout( new FillLayout() );
+    stage.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
   }
 
   private void createPrevButton( Composite parent ) {
     prev = createCompositeButton( parent, "left.png", SWT.LEFT );
-    prev.getChildren()[ 0 ].addListener( SWT.MouseDown, new Listener() {
+    Listener listener = new Listener() {
       @Override
       public void handleEvent( Event event ) {
         prev();
       }
-    } );
+    };
+    prev.addListener( SWT.MouseDown, listener );
+    prev.getChildren()[ 0 ].addListener( SWT.MouseDown, listener );
   }
 
   private void createNextButton( Composite parent ) {
     next = createCompositeButton( parent, "right.png", SWT.RIGHT );
-    next.getChildren()[ 0 ].addListener( SWT.MouseDown, new Listener() {
+    Listener listener = new Listener() {
       @Override
       public void handleEvent( Event event ) {
         next();
       }
-    } );
+    };
+    next.addListener( SWT.MouseDown, listener );
+    next.getChildren()[ 0 ].addListener( SWT.MouseDown, listener );
   }
 
   private Composite createCompositeButton( Composite parent, String img, int align ) {
     Composite result = new Composite( parent, SWT.NONE );
+    result.setEnabled( false );
     result.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     result.setBackgroundMode( SWT.INHERIT_FORCE );
     result.addListener( SWT.MouseMove, getButtonMouseMoveListener() );
+    result.addListener( SWT.MouseDown, getButtonMouseMoveListener() );
     result.addListener( SWT.MouseExit, getButtonMouseExitListener() );
     GridLayout layout = new GridLayout( 1, true );
     layout.marginRight = 20;
@@ -97,12 +163,24 @@ public class Presentation {
     Label label = new Label( result, align );
     label.setImage( getImage( img ) );
     label.setLayoutData( new GridData( align, SWT.CENTER, true, true ) );
-    label.setCursor( parent.getDisplay().getSystemCursor( SWT.CURSOR_HAND ) );
     label.setVisible( false );
-    label.addListener( SWT.MouseExit, getButtonLabelMouseHoverListener() );
-    label.addListener( SWT.MouseEnter, getButtonLabelMouseHoverListener() );
     result.setData( IMAGE_KEY, WidgetUtil.getId( label ) );
     return result;
+  }
+
+  void enableButton( Composite button ) {
+    Control label = button.getChildren()[ 0 ];
+    button.setCursor( button.getDisplay().getSystemCursor( SWT.CURSOR_HAND ) );
+    label.setCursor( button.getDisplay().getSystemCursor( SWT.CURSOR_HAND ) );
+    button.setEnabled( true );
+  }
+
+  void disableButton( Composite button ) {
+    Control label = button.getChildren()[ 0 ];
+    button.setCursor( null );
+    label.setCursor( null );
+    button.setEnabled( false );
+    label.setVisible( false );
   }
 
   private static Image getImage( String name ) {
@@ -144,9 +222,7 @@ public class Presentation {
                       + "    window.clearTimeout( image.getData( 'timer' ) );"
                       + "  }"
                       + "  var timer = window.setTimeout( function() {"
-                      + "    if( !image.getData( 'hover' ) ) {"
-                      + "      image.setVisible( false );"
-                      + "    }"
+                      + "    image.setVisible( false );"
                       + "  }, 2000 );"
                       + "  image.setData( 'timer', timer );"
                       + "}";
@@ -156,7 +232,6 @@ public class Presentation {
   }
 
   private Listener getButtonMouseExitListener() {
-    // Note crashing if failing? Not rendered for Composite?
     if( buttonMouseExitListener == null ) {
       String script =   "function handleEvent( event ) {"
                       + "  var id = event.widget.getData( '" + IMAGE_KEY + "' );"
@@ -166,17 +241,6 @@ public class Presentation {
       buttonMouseExitListener = new ClientListener( script );
     }
     return buttonMouseExitListener;
-  }
-
-  private Listener getButtonLabelMouseHoverListener() {
-    // Note crashing if failing? Not rendered for Composite?
-    if( buttonLabelMouseHoverListener == null ) {
-      String script =   "function handleEvent( event ) {"
-                      + "  event.widget.setData( 'hover', event.type === SWT.MouseEnter ? true : false );"
-                      + "}";
-      buttonLabelMouseHoverListener = new ClientListener( script );
-    }
-    return buttonLabelMouseHoverListener;
   }
 
 }

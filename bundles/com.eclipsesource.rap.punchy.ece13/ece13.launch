@@ -22,7 +22,7 @@
 <stringAttribute key="org.eclipse.rap.launch.contextpath" value="/"/>
 <stringAttribute key="org.eclipse.rap.launch.dataLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.rap.tools.launch/ece13"/>
 <booleanAttribute key="org.eclipse.rap.launch.developmentMode" value="false"/>
-<booleanAttribute key="org.eclipse.rap.launch.openBrowser" value="true"/>
+<booleanAttribute key="org.eclipse.rap.launch.openBrowser" value="false"/>
 <intAttribute key="org.eclipse.rap.launch.port" value="10081"/>
 <stringAttribute key="org.eclipse.rap.launch.servletPath" value="/ece13"/>
 <intAttribute key="org.eclipse.rap.launch.sessionTimeout" value="0"/>
