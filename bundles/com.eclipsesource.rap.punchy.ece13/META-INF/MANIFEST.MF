@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ece13
+Bundle-SymbolicName: com.eclipsesource.rap.punchy.ece13
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: ECLIPSESOURCE
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,3.0.0)"
+Service-Component: OSGI-INF/contribution.xml
+Import-Package: com.eclipsesource.rap.punchy

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Punchy
+Bundle-SymbolicName: com.eclipsesource.rap.punchy
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: ECLIPSESOURCE
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: com.eclipsesource.rap.punchy
+Import-Package: org.eclipse.rap.rwt.lifecycle;version="2.2.0",
+ org.eclipse.rap.rwt.scripting;version="2.2.0",
+ org.eclipse.swt,
+ org.eclipse.swt.graphics,
+ org.eclipse.swt.layout,
+ org.eclipse.swt.widgets
