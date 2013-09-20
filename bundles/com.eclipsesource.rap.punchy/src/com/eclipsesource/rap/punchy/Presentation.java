@@ -19,6 +19,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 
 public class Presentation {
@@ -35,6 +37,8 @@ public class Presentation {
   private final Point minsize;
   private int slideIndex = -1;
   private Composite currentSlideControl;
+  private Menu menu;
+  private boolean maximized = true;
 
   public Presentation( Composite parent, Point size ) {
     main = new Composite( parent, SWT.NONE );
@@ -43,6 +47,7 @@ public class Presentation {
     createPrevButton( main );
     createStage( main );
     createNextButton( main );
+    createMenu( main );
     main.addListener( SWT.Resize, getMainResizeListener() );
     main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     WidgetUtil.registerDataKeys( IMAGE_KEY );
@@ -73,6 +78,21 @@ public class Presentation {
     slides.add( slide );
   }
 
+  private void createMenu( Composite parent ) {
+    menu = new Menu( parent );
+    final MenuItem maxItem = new MenuItem( menu, SWT.CHECK );
+    maxItem.setText( "Maximized CTRL+M" );
+    maxItem.setAccelerator( SWT.CONTROL | 'M' );
+    maxItem.setSelection( true );
+    maxItem.addListener( SWT.Selection, new Listener() {
+      @Override
+      public void handleEvent( Event event ) {
+        maximized = maxItem.getSelection();
+        internalLayout();
+      }
+    } );
+  }
+
   private void initialize() {
     // TODO Auto-generated method stub
   }
@@ -90,10 +110,12 @@ public class Presentation {
 
   private void showSlide( int index ) {
     if( currentSlideControl != null ) {
+      currentSlideControl.setMenu( null ); // do not dispose the menu!
       currentSlideControl.dispose();
     }
     slideIndex = index;
     currentSlideControl = slides.get( slideIndex ).create( stage );
+    currentSlideControl.setMenu( menu );
     stage.layout();
     updateNavigation();
   }
@@ -109,13 +131,6 @@ public class Presentation {
     } else {
       disableButton( next );
     }
-  }
-
-  private Point computeStageSize() {
-    Point size = main.getSize();
-    int stageHeight = size.y;
-    int stageWidth = ( int )Math.ceil( stageHeight * 4 / 3 );
-    return new Point( stageWidth, stageHeight );
   }
 
   private void createStage( Composite parent ) {
@@ -154,7 +169,6 @@ public class Presentation {
     result.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     result.setBackgroundMode( SWT.INHERIT_FORCE );
     result.addListener( SWT.MouseMove, getButtonMouseMoveListener() );
-    result.addListener( SWT.MouseDown, getButtonMouseMoveListener() );
     result.addListener( SWT.MouseExit, getButtonMouseExitListener() );
     GridLayout layout = new GridLayout( 1, true );
     layout.marginRight = 20;
@@ -198,15 +212,7 @@ public class Presentation {
     return new Listener() {
       @Override
       public void handleEvent( Event event ) {
-        Point stageSize = computeStageSize();
-        stage.setSize( stageSize );
-        int buttonWidth = ( int )Math.ceil( ( main.getSize().x - stageSize.x ) / 2 );
-        int buttonHeight = main.getSize().y;
-        prev.setSize( buttonWidth, buttonHeight );
-        next.setSize( buttonWidth, buttonHeight );
-        prev.setLocation( 0, 0 );
-        stage.setLocation( buttonWidth, 0 );
-        next.setLocation( buttonWidth + stageSize.x, 0 );
+        internalLayout();
       }
     };
   }
@@ -219,11 +225,14 @@ public class Presentation {
                       + "  var image = rap.getObject( id );"
                       + "  image.setVisible( true );"
                       + "  if( image.getData( 'timer' ) ) {"
+                      + "console.log( 'clear ' + image.getData( 'timer' ) );"
                       + "    window.clearTimeout( image.getData( 'timer' ) );"
                       + "  }"
                       + "  var timer = window.setTimeout( function() {"
+                      + "    console.log( 'hide by ' + timer );"
                       + "    image.setVisible( false );"
                       + "  }, 2000 );"
+                      + "console.log('install ' + timer );"
                       + "  image.setData( 'timer', timer );"
                       + "}";
       buttonMouseMoveListener = new ClientListener( script );
@@ -241,6 +250,32 @@ public class Presentation {
       buttonMouseExitListener = new ClientListener( script );
     }
     return buttonMouseExitListener;
+  }
+
+  private void internalLayout() {
+    Point stageSize = computeStageSize();
+    stage.setVisible( stageSize.x >= minsize.x && stageSize.y >= minsize.y );
+    stage.setSize( stageSize );
+    int buttonWidth = ( int )Math.ceil( ( main.getSize().x - stageSize.x ) / 2 );
+    int buttonHeight = main.getSize().y;
+    prev.setSize( buttonWidth, buttonHeight );
+    next.setSize( buttonWidth, buttonHeight );
+    prev.setLocation( 0, 0 );
+    stage.setLocation( buttonWidth, 0 );
+    next.setLocation( buttonWidth + stageSize.x, 0 );
+  }
+
+  private Point computeStageSize() {
+    Point size = main.getSize();
+    if( maximized ){
+      int stageHeight = size.y;
+      int stageWidth = ( int )Math.ceil( stageHeight * minsize.x / minsize.y );
+      return new Point( stageWidth, stageHeight );
+    } else {
+      int stageHeight = Math.min( size.y, minsize.y );
+      int stageWidth = Math.min( size.x, minsize.x );
+      return new Point( stageWidth, stageHeight );
+    }
   }
 
 }
