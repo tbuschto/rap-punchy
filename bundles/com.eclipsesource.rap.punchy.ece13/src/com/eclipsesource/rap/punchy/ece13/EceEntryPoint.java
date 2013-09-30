@@ -17,16 +17,17 @@ public class EceEntryPoint extends AbstractEntryPoint {
     protected void createContents( Composite parent ) {
         parent.setLayout( new FillLayout() );
         Presentation presentation = new Presentation( parent, new Point( 800, 600 ) );
-        new AbstractSlide( presentation ) {
+        new EceSlide( presentation ) {
           @Override
           public String getTitle() {
             return "Slide 1";
           }
           @Override
-          protected void createContent( Composite slideControl ) {
+          protected void createContent( Composite slideComposite ) {
+            super.createContent( slideComposite );
             title();
             list( "This is something" );
-            flow( new Text( slideControl, SWT.BORDER ), 200 );
+            flow( new Text( slideComposite, SWT.BORDER ), 200 );
             list( "I have to say" );
           }
         };
@@ -36,10 +37,10 @@ public class EceEntryPoint extends AbstractEntryPoint {
             return "Slide 2";
           }
           @Override
-          protected void createContent( Composite slideControl ) {
+          protected void createContent( Composite slideComposite ) {
             title();
             spacer( 200 );
-            html( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
+            text( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
           }
         };
         new AbstractSlide( presentation ) {

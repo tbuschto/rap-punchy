@@ -1,12 +1,17 @@
 package com.eclipsesource.rap.punchy;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
 
@@ -23,36 +28,60 @@ public abstract class AbstractSlide {
   }
 
   public abstract String getTitle();
-  protected abstract void createContent( Composite slideControl );
+  protected abstract void createContent( Composite slideComposite );
 
   public Presentation getPresentation() {
     return presentation;
   }
 
   protected Control title() {
-    Control control = html( getTitle() );
+    Control control = html( getTitle(), SWT.LEFT );
     control.setData( RWT.CUSTOM_VARIANT, "punchyTitle" );
     return control;
   }
 
-  protected Control list( Object... listItems ) {
-    Control control = html( listHtml( listItems ) );
-    control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
-    return control;
-  }
-
-  protected Control image( String name ) {
-    return null;
+  protected Control text( String text ) {
+    return styledText( "text", text );
   }
 
   protected Control styledText( String style, String text ) {
-    Control control = html( text );
-    style( style, control );
+    Control control = html( text, SWT.WRAP );
+    styleAs( style, control );
     return control;
   }
 
-  protected Control html( Object content ) {
-    Label label = new Label( currentSlideComposite, SWT.WRAP );
+
+  protected Control image( String name ) {
+    return image( name, SWT.LEFT );
+  }
+
+  protected Control image( String name, int style ) {
+    Label label = new Label( currentSlideComposite, style );
+    Image image = loadImage( name );
+    label.setImage( image );
+    label.setData( RWT.CUSTOM_VARIANT, "punchyImage" );
+    flow( label );
+    return label;
+  }
+
+  protected Image loadImage( String name ) {
+    InputStream stream = getClass().getResourceAsStream( name );
+    Image image = new Image( Display.getCurrent(), stream );
+    try {
+      stream.close();
+    } catch( IOException e ) {
+      e.printStackTrace();
+    }
+    return image;
+  }
+
+  protected Control list( Object... listItems ) {
+    Control control = html( listHtml( listItems ), SWT.LEFT );
+    control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
+    return control;
+  }
+  protected Control html( Object content, int style ) {
+    Label label = new Label( currentSlideComposite, style );
     label.setText( content.toString() );
     label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
     flow( label );
@@ -63,12 +92,6 @@ public abstract class AbstractSlide {
     this.spacer += spacer;
   }
 
-  // TODO : as deco?
-
-  protected void center( Control... control ) {
-
-  }
-
   protected void floatRight( Control control ) {
 
   }
@@ -77,25 +100,11 @@ public abstract class AbstractSlide {
 
   }
 
-  protected void bottomCenter( Control control ) {
-
-  }
-
-  protected void bottomLeft( Control control ) {
-
-  }
-
-  protected void bottomRight( Control control ) {
-
-  }
-
-  // use floatRight
-//  protected void topRight( Control control ) {
-//
-//  }
-
-  protected void style( String style, Control... control ) {
-
+  protected void styleAs( String style, Control... control ) {
+    String variant = "punchy" + style.substring( 0, 1 ).toUpperCase() + style.substring( 1 );
+    for( int i = 0; i < control.length; i++ ) {
+      control[ i ].setData( RWT.CUSTOM_VARIANT, variant );
+    }
   }
 
   protected void flow( Control control ) {
