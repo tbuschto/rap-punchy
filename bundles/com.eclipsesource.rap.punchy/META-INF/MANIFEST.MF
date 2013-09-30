@@ -10,6 +10,7 @@ Import-Package: org.eclipse.rap.rwt;version="2.2.0",
  org.eclipse.rap.rwt.lifecycle;version="2.2.0",
  org.eclipse.rap.rwt.scripting;version="2.2.0",
  org.eclipse.swt,
+ org.eclipse.swt.custom,
  org.eclipse.swt.graphics,
  org.eclipse.swt.layout,
  org.eclipse.swt.widgets

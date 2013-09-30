@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -39,6 +40,9 @@ public class Presentation {
   private Composite currentSlideControl;
   private Menu menu;
   private boolean maximized = true;
+  private MenuItem prevItem;
+  private MenuItem nextItem;
+  private final Label warning;
 
   public Presentation( Composite parent, Point size ) {
     main = new Composite( parent, SWT.NONE );
@@ -46,8 +50,12 @@ public class Presentation {
     slides = new ArrayList<AbstractSlide>();
     createPrevButton( main );
     createStage( main );
-    createNextButton( main );
+    warning = new Label( main, SWT.CENTER );
+    warning.setText( "Minimum size " + size );
+    warning.setVisible( false );
+    warning.setForeground( new Color( parent.getDisplay(), 255, 40, 40 ) );
     createMenu( main );
+    createNextButton( main );
     main.addListener( SWT.Resize, getMainResizeListener() );
     main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     WidgetUtil.registerDataKeys( IMAGE_KEY );
@@ -80,8 +88,29 @@ public class Presentation {
 
   private void createMenu( Composite parent ) {
     menu = new Menu( parent );
+    // RAP Bug: Wanted to use accelerator does not convert correctly for Key left/right/space?
+    prevItem = new MenuItem( menu, SWT.PUSH );
+    prevItem.setText( "Previous\tCtrl + Shift + Space" );
+    //prevItem.setAccelerator( SWT.CONTROL | SWT.SHIFT | ' ' );
+    prevItem.setSelection( true );
+    prevItem.addListener( SWT.Selection, new Listener() {
+      @Override
+      public void handleEvent( Event event ) {
+        prev();
+      }
+    } );
+    nextItem = new MenuItem( menu, SWT.PUSH );
+    nextItem.setText( "Next\tCtrl + Space" );
+    //nextItem.setAccelerator( SWT.CONTROL | ' ' );
+    nextItem.setSelection( true );
+    nextItem.addListener( SWT.Selection, new Listener() {
+      @Override
+      public void handleEvent( Event event ) {
+        next();
+      }
+    } );
     final MenuItem maxItem = new MenuItem( menu, SWT.CHECK );
-    maxItem.setText( "Maximized CTRL+M" );
+    maxItem.setText( "Maximized\tCtrl + M" );
     maxItem.setAccelerator( SWT.CONTROL | 'M' );
     maxItem.setSelection( true );
     maxItem.addListener( SWT.Selection, new Listener() {
@@ -123,13 +152,17 @@ public class Presentation {
   private void updateNavigation() {
     if( slideIndex > 0 ) {
       enableButton( prev );
+      prevItem.setEnabled( true );
     } else {
       disableButton( prev );
+      prevItem.setEnabled( false );
     }
     if( slideIndex < slides.size() - 1 ) {
       enableButton( next );
+      nextItem.setEnabled( true );
     } else {
       disableButton( next );
+      nextItem.setEnabled( false );
     }
   }
 
@@ -225,14 +258,11 @@ public class Presentation {
                       + "  var image = rap.getObject( id );"
                       + "  image.setVisible( true );"
                       + "  if( image.getData( 'timer' ) ) {"
-                      + "console.log( 'clear ' + image.getData( 'timer' ) );"
                       + "    window.clearTimeout( image.getData( 'timer' ) );"
                       + "  }"
                       + "  var timer = window.setTimeout( function() {"
-                      + "    console.log( 'hide by ' + timer );"
                       + "    image.setVisible( false );"
                       + "  }, 2000 );"
-                      + "console.log('install ' + timer );"
                       + "  image.setData( 'timer', timer );"
                       + "}";
       buttonMouseMoveListener = new ClientListener( script );
@@ -254,14 +284,18 @@ public class Presentation {
 
   private void internalLayout() {
     Point stageSize = computeStageSize();
-    stage.setVisible( stageSize.x >= minsize.x && stageSize.y >= minsize.y );
+    boolean stageVisible = stageSize.x >= minsize.x && stageSize.y >= minsize.y;
+    stage.setVisible( stageVisible );
+    warning.setVisible( !stageVisible );
     stage.setSize( stageSize );
+    warning.setSize( stageSize );
     int buttonWidth = ( int )Math.ceil( ( main.getSize().x - stageSize.x ) / 2 );
     int buttonHeight = main.getSize().y;
     prev.setSize( buttonWidth, buttonHeight );
     next.setSize( buttonWidth, buttonHeight );
     prev.setLocation( 0, 0 );
     stage.setLocation( buttonWidth, 0 );
+    warning.setLocation( buttonWidth, 0 );
     next.setLocation( buttonWidth + stageSize.x, 0 );
   }
 

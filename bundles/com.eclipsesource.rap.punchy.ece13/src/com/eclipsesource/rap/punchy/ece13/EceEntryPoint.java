@@ -1,15 +1,17 @@
 package com.eclipsesource.rap.punchy.ece13;
 
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 import com.eclipsesource.rap.punchy.AbstractSlide;
 import com.eclipsesource.rap.punchy.Presentation;
 
 
-public class BasicEntryPoint extends AbstractEntryPoint {
+public class EceEntryPoint extends AbstractEntryPoint {
 
     @Override
     protected void createContents( Composite parent ) {
@@ -23,6 +25,9 @@ public class BasicEntryPoint extends AbstractEntryPoint {
           @Override
           protected void createContent( Composite slideControl ) {
             title();
+            list( "This is something" );
+            flow( new Text( slideControl, SWT.BORDER ), 200 );
+            list( "I have to say" );
           }
         };
         new AbstractSlide( presentation ) {
@@ -33,6 +38,8 @@ public class BasicEntryPoint extends AbstractEntryPoint {
           @Override
           protected void createContent( Composite slideControl ) {
             title();
+            spacer( 200 );
+            html( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
           }
         };
         new AbstractSlide( presentation ) {
@@ -42,7 +49,8 @@ public class BasicEntryPoint extends AbstractEntryPoint {
           }
           @Override
           protected void createContent( Composite slideControl ) {
-            title();
+            spacer( 50 );
+            list( "blub", "blab", "foo" );
           }
         };
         presentation.start();
