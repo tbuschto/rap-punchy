@@ -312,4 +312,12 @@ public class Presentation {
     }
   }
 
+  int getSlidesCount() {
+    return slides.size();
+  }
+
+  int indexOfSlide( AbstractSlide slide ) {
+    return slides.indexOf( slide );
+  }
+
 }

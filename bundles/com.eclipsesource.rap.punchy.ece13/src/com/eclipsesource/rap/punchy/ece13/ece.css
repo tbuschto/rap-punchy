@@ -1,3 +1,21 @@
+.punchySlide {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #cddced ),
+    to( #ffffff )
+  );
+}
+
 .punchyHeader {
   background-color: rgb( 230, 237, 245 );
+  font: 32px Arial;
+}
+
+.punchyFooter {
+  background-color: rgb( 0, 62, 135 );
+  color: white;
+}
+
+.punchyList, .punchyText {
+  background-color: transparent;
 }

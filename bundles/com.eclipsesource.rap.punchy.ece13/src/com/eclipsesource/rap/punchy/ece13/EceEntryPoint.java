@@ -25,7 +25,6 @@ public class EceEntryPoint extends AbstractEntryPoint {
           @Override
           protected void createContent( Composite slideComposite ) {
             super.createContent( slideComposite );
-            title();
             list( "This is something" );
             flow( new Text( slideComposite, SWT.BORDER ), 200 );
             list( "I have to say" );
@@ -38,7 +37,6 @@ public class EceEntryPoint extends AbstractEntryPoint {
           }
           @Override
           protected void createContent( Composite slideComposite ) {
-            title();
             spacer( 200 );
             text( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
           }

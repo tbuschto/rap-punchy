@@ -30,6 +30,15 @@ public abstract class AbstractSlide {
   public abstract String getTitle();
   protected abstract void createContent( Composite slideComposite );
 
+
+  protected int getSlidesCount() {
+    return presentation.getSlidesCount();
+  }
+
+  protected int getSlideNumber() {
+    return presentation.indexOfSlide( this );
+  }
+
   public Presentation getPresentation() {
     return presentation;
   }
@@ -134,6 +143,21 @@ public abstract class AbstractSlide {
     }
     control.setLayoutData( formData );
     currentFlowWidget = control;
+  }
+
+  protected void toBottom( Control control, int width, int height ) {
+    FormData formData = new FormData();
+    formData.bottom = new FormAttachment( 100 );
+    formData.left = new FormAttachment( 0 );
+    if( width >= 0 ) {
+      formData.width = width;
+    } else {
+      formData.right = new FormAttachment( 100 );
+    }
+    if( height >= 0 ) {
+      formData.height = height;
+    }
+    control.setLayoutData( formData );
   }
 
   Composite create( Composite stage ) {
