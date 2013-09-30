@@ -35,21 +35,19 @@ public abstract class AbstractSlide {
     return control;
   }
 
-  protected void spacer( int spacer ) {
-    this.spacer += spacer;
+  protected Control list( Object... listItems ) {
+    Control control = html( listHtml( listItems ) );
+    control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
+    return control;
   }
 
-  protected Control list( String... listItems ) {
-    StringBuilder htmlBuilder = new StringBuilder();
-    htmlBuilder.append( "<ul>" );
-    for( int i = 0; i < listItems.length; i++ ) {
-      htmlBuilder.append( "<li>" );
-      htmlBuilder.append( listItems[ i ] );
-      htmlBuilder.append( "</li>" );
-    }
-    htmlBuilder.append( "</ul>" );
-    Control control = html( htmlBuilder );
-    control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
+  protected Control image( String name ) {
+    return null;
+  }
+
+  protected Control styledText( String style, String text ) {
+    Control control = html( text );
+    style( style, control );
     return control;
   }
 
@@ -59,6 +57,45 @@ public abstract class AbstractSlide {
     label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
     flow( label );
     return label;
+  }
+
+  protected void spacer( int spacer ) {
+    this.spacer += spacer;
+  }
+
+  // TODO : as deco?
+
+  protected void center( Control... control ) {
+
+  }
+
+  protected void floatRight( Control control ) {
+
+  }
+
+  protected void clear( Control control ) {
+
+  }
+
+  protected void bottomCenter( Control control ) {
+
+  }
+
+  protected void bottomLeft( Control control ) {
+
+  }
+
+  protected void bottomRight( Control control ) {
+
+  }
+
+  // use floatRight
+//  protected void topRight( Control control ) {
+//
+//  }
+
+  protected void style( String style, Control... control ) {
+
   }
 
   protected void flow( Control control ) {
@@ -99,6 +136,31 @@ public abstract class AbstractSlide {
     currentSlideComposite = null;
     currentFlowWidget = null;
     return slideComposite;
+  }
+
+  private String listHtml( Object... listItems ) {
+    StringBuilder htmlBuilder = new StringBuilder();
+    htmlBuilder.append( "<ul style=\"margin:0px\">" );
+    boolean merge = false;
+    for( int i = 0; i < listItems.length; i++ ) {
+      if( !merge ) {
+        htmlBuilder.append( "<li>" );
+      }
+      merge = false;
+      if( listItems[ i ] instanceof String[] ) {
+        htmlBuilder.append( listHtml( ( Object[] )listItems[ i ] ) );
+      } else {
+        htmlBuilder.append( listItems[ i ] );
+      }
+      if( i < listItems.length - 1 && listItems[ i + 1 ] instanceof String[] ) {
+        merge = true;
+      } else {
+        htmlBuilder.append( "</li>" );
+      }
+    }
+    htmlBuilder.append( "</ul>" );
+    String html = htmlBuilder.toString();
+    return html;
   }
 
 }

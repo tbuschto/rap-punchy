@@ -50,7 +50,15 @@ public class EceEntryPoint extends AbstractEntryPoint {
           @Override
           protected void createContent( Composite slideControl ) {
             spacer( 50 );
-            list( "blub", "blab", "foo" );
+            list(
+              "blub",
+              "blab",
+              "foo",
+              new String[] {
+                "Hello",
+                "World"
+              }
+            );
           }
         };
         presentation.start();
