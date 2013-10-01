@@ -61,6 +61,7 @@ public abstract class EceSlide extends AbstractSlide {
     label.setText( ( getSlideNumber() + 1 ) + "/" + getSlidesCount() );
     styleAs( "footer", label );
     toBottom( footer, -1, 40 );
+    addPresentationMenu( footer );
   }
 
 }

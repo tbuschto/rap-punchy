@@ -3,8 +3,10 @@ package com.eclipsesource.rap.punchy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
@@ -43,6 +45,7 @@ public class Presentation {
   private MenuItem prevItem;
   private MenuItem nextItem;
   private final Label warning;
+  private List<Control> menuControls = new ArrayList<Control>( 10 );
 
   public Presentation( Composite parent, Point size ) {
     main = new Composite( parent, SWT.NONE );
@@ -89,9 +92,24 @@ public class Presentation {
   private void createMenu( Composite parent ) {
     menu = new Menu( parent );
     // RAP Bug: Wanted to use accelerator does not convert correctly for Key left/right/space?
+    Display.getCurrent().setData( RWT.ACTIVE_KEYS, new String[]{
+      "CTRL+ARROW_LEFT",
+      "CTRL+ARROW_RIGHT"
+    } );
+    Display.getCurrent().addFilter( SWT.KeyDown, new Listener() {
+      @Override
+      public void handleEvent( Event event ) {
+        if( event.stateMask == SWT.CTRL ) {
+          if( event.keyCode == SWT.ARROW_LEFT ) {
+            checkedPrev();
+          } else if( event.keyCode == SWT.ARROW_RIGHT ) {
+            checkedNext();
+          }
+        }
+      }
+    });
     prevItem = new MenuItem( menu, SWT.PUSH );
-    prevItem.setText( "Previous\tCtrl + Shift + Space" );
-    //prevItem.setAccelerator( SWT.CONTROL | SWT.SHIFT | ' ' );
+    prevItem.setText( "Previous\tCtrl + Left" );
     prevItem.setSelection( true );
     prevItem.addListener( SWT.Selection, new Listener() {
       @Override
@@ -100,8 +118,7 @@ public class Presentation {
       }
     } );
     nextItem = new MenuItem( menu, SWT.PUSH );
-    nextItem.setText( "Next\tCtrl + Space" );
-    //nextItem.setAccelerator( SWT.CONTROL | ' ' );
+    nextItem.setText( "Next\tCtrl + Right" );
     nextItem.setSelection( true );
     nextItem.addListener( SWT.Selection, new Listener() {
       @Override
@@ -139,14 +156,27 @@ public class Presentation {
 
   private void showSlide( int index ) {
     if( currentSlideControl != null ) {
-      currentSlideControl.setMenu( null ); // do not dispose the menu!
+      detachMenu();
       currentSlideControl.dispose();
     }
     slideIndex = index;
     currentSlideControl = slides.get( slideIndex ).create( stage );
-    currentSlideControl.setMenu( menu );
+    addPresentationMenu( currentSlideControl );
     stage.layout();
     updateNavigation();
+  }
+
+  void addPresentationMenu( Control control ) {
+    control.setMenu( menu );
+    menuControls.add( control );
+  }
+
+  private void detachMenu() {
+    // Otherwise the mnenu gets disposed... bug?
+    for( Iterator<Control> iterator = menuControls.iterator(); iterator.hasNext(); ) {
+      iterator.next().setMenu( null );
+    }
+    menuControls = new ArrayList<Control>( 10 );
   }
 
   private void updateNavigation() {
@@ -297,6 +327,18 @@ public class Presentation {
     stage.setLocation( buttonWidth, 0 );
     warning.setLocation( buttonWidth, 0 );
     next.setLocation( buttonWidth + stageSize.x, 0 );
+  }
+
+  private void checkedNext() {
+    if( slideIndex < slides.size() - 1 ) {
+      next();
+    }
+  }
+
+  private void checkedPrev() {
+    if( slideIndex > 0 ) {
+      prev();
+    }
   }
 
   private Point computeStageSize() {

@@ -120,6 +120,10 @@ public abstract class AbstractSlide {
     }
   }
 
+  protected void addPresentationMenu( Control control ) {
+    presentation.addPresentationMenu( control );
+  }
+
   protected void flow( Control control ) {
     flow( control, -1, -1 );
   }
