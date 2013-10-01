@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.service.BrowserNavigation;
+import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
+import org.eclipse.rap.rwt.client.service.BrowserNavigationListener;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
@@ -33,6 +36,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 
@@ -51,7 +55,7 @@ public class Presentation {
   private int slideIndex = -1;
   private Composite currentSlideControl;
   private Menu menu;
-  private boolean maximized = true;
+  private boolean maximized = false;
   private MenuItem prevItem;
   private MenuItem nextItem;
   private Label warning;
@@ -71,10 +75,26 @@ public class Presentation {
     main.addListener( SWT.Resize, getMainResizeListener() );
     main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     WidgetUtil.registerDataKeys( IMAGE_KEY );
+    addNavigationListener();
+  }
+
+  private void addNavigationListener() {
+    BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
+    navigation.addBrowserNavigationListener( new BrowserNavigationListener() {
+      @Override
+      public void navigated( BrowserNavigationEvent event ) {
+        String state = event.getState();
+        if( state.startsWith( "slide" ) )  {
+          int slide = Integer.parseInt( state.substring( 5 ) ) - 1;
+          showSlide( slide );
+        }
+      }
+    } );
   }
 
   private void createSlideList( Composite parent ) {
     slideList = new Table( parent, SWT.V_SCROLL | SWT.BORDER );
+    new TableColumn( slideList, SWT.NONE ).setWidth( 300 );
     FormData layoutData = new FormData();
     layoutData.left = new FormAttachment( 0 );
     layoutData.top = new FormAttachment( 0 );
@@ -90,13 +110,15 @@ public class Presentation {
     } );
     slideList.addSelectionListener( new SelectionAdapter() {
       @Override
-      public void widgetSelected( SelectionEvent e ) {
+      public void widgetDefaultSelected( SelectionEvent e ) {
         showSlide( slideList.getSelectionIndex() );
-      }
+        slideList.setVisible( false );
+      };
     } );
     slideList.addMouseListener( new MouseAdapter() {
       @Override
       public void mouseUp( MouseEvent e ) {
+        showSlide( slideList.getSelectionIndex() );
         slideList.setVisible( false );
       }
     } );
@@ -155,7 +177,6 @@ public class Presentation {
     });
     prevItem = new MenuItem( menu, SWT.PUSH );
     prevItem.setText( "Previous\tCtrl + Left" );
-    prevItem.setSelection( true );
     prevItem.addListener( SWT.Selection, new Listener() {
       @Override
       public void handleEvent( Event event ) {
@@ -164,7 +185,6 @@ public class Presentation {
     } );
     nextItem = new MenuItem( menu, SWT.PUSH );
     nextItem.setText( "Next\tCtrl + Right" );
-    nextItem.setSelection( true );
     nextItem.addListener( SWT.Selection, new Listener() {
       @Override
       public void handleEvent( Event event ) {
@@ -174,7 +194,6 @@ public class Presentation {
     final MenuItem maxItem = new MenuItem( menu, SWT.CHECK );
     maxItem.setText( "Maximized\tCtrl + M" );
     maxItem.setAccelerator( SWT.CONTROL | 'M' );
-    maxItem.setSelection( true );
     maxItem.addListener( SWT.Selection, new Listener() {
       @Override
       public void handleEvent( Event event ) {
@@ -185,7 +204,6 @@ public class Presentation {
     final MenuItem slidesItem = new MenuItem( menu, SWT.PUSH );
     slidesItem.setText( "Slides\tCtrl + S" );
     slidesItem.setAccelerator( SWT.CONTROL | 'S' );
-    slidesItem.setSelection( true );
     slidesItem.addListener( SWT.Selection, new Listener() {
       @Override
       public void handleEvent( Event event ) {
@@ -217,19 +235,23 @@ public class Presentation {
   }
 
   private void showSlide( int index ) {
-    slideList.setSelection( index );
-    if( currentSlideControl != null ) {
-      detachMenu();
-      currentSlideControl.dispose();
+    if( index != slideIndex ) {
+      if( currentSlideControl != null ) {
+        detachMenu();
+        currentSlideControl.dispose();
+      }
+      slideIndex = index;
+      AbstractSlide slide = slides.get( slideIndex );
+      currentSlideControl = slide.create( stage );
+      FormData layoutData = createFillFormData();
+      currentSlideControl.setLayoutData( layoutData );
+      slideList.moveAbove( currentSlideControl );
+      addPresentationMenu( currentSlideControl );
+      stage.layout();
+      updateNavigationUI();
+      BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
+      navigation.pushState( "slide" + ( index + 1 ), slide.getTitle() );
     }
-    slideIndex = index;
-    currentSlideControl = slides.get( slideIndex ).create( stage );
-    FormData layoutData = createFillFormData();
-    currentSlideControl.setLayoutData( layoutData );
-    slideList.moveAbove( currentSlideControl );
-    addPresentationMenu( currentSlideControl );
-    stage.layout();
-    updateNavigation();
   }
 
   private static FormData createFillFormData() {
@@ -254,7 +276,7 @@ public class Presentation {
     menuControls = new ArrayList<Control>( 10 );
   }
 
-  private void updateNavigation() {
+  private void updateNavigationUI() {
     if( slideIndex > 0 ) {
       enableButton( prev );
       prevItem.setEnabled( true );
@@ -269,6 +291,7 @@ public class Presentation {
       disableButton( next );
       nextItem.setEnabled( false );
     }
+    slideList.setSelection( slideIndex );
   }
 
   private void createStage( Composite parent ) {

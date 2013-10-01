@@ -7,7 +7,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import com.eclipsesource.rap.punchy.AbstractSlide;
 import com.eclipsesource.rap.punchy.Presentation;
 
 
@@ -32,13 +31,14 @@ public class EceEntryPoint extends AbstractEntryPoint {
             list( "Markus Knauer, RAP Co-Lead", "Tim Buschtöns, RAP Comitter" );
           }
         };
-        new AbstractSlide( presentation ) {
+        new EceSlide( presentation ) {
           @Override
           public String getTitle() {
             return "Slide 2";
           }
           @Override
           protected void createContent( Composite slideComposite ) {
+            super.createContent( slideComposite );
             list( "This is something" );
             flow( new Text( slideComposite, SWT.BORDER ), 200 );
             list( "I have to say" );
@@ -46,13 +46,14 @@ public class EceEntryPoint extends AbstractEntryPoint {
             text( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
           }
         };
-        new AbstractSlide( presentation ) {
+        new EceSlide( presentation ) {
           @Override
           public String getTitle() {
             return "Slide 3";
           }
           @Override
-          protected void createContent( Composite slideControl ) {
+          protected void createContent( Composite slideComposite ) {
+            super.createContent( slideComposite );
             spacer( 50 );
             list(
               "blub",

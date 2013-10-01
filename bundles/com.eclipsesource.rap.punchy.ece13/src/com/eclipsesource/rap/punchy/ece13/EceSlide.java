@@ -22,7 +22,8 @@ public abstract class EceSlide extends AbstractSlide {
     setSpacing( 8 );
     spacer( 20 );
     footer( slideComposite );
-    setIndent( 30 );
+    setPaddingLeft( 30 );
+    setPaddingRight( 30 );
   }
 
   private void header( Composite slideComposite ) {

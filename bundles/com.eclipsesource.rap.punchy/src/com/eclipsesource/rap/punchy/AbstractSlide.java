@@ -22,7 +22,8 @@ public abstract class AbstractSlide {
   private Control currentFlowWidget;
   private int spacerSum = 0;
   private int defaultSpacing = 0;
-  private int currentIndent = 0;
+  private int leftPadding = 0;
+  private int rightPadding = 0;
 
   public AbstractSlide( Presentation presentation ) {
     this.presentation = presentation;
@@ -46,8 +47,12 @@ public abstract class AbstractSlide {
     spacer( spacing );
   }
 
-  protected void setIndent( int indent ) {
-    currentIndent = indent;
+  protected void setPaddingLeft( int value ) {
+    leftPadding = value;
+  }
+
+  protected void setPaddingRight( int value ) {
+    rightPadding = value;
   }
 
   public Presentation getPresentation() {
@@ -59,7 +64,7 @@ public abstract class AbstractSlide {
   }
 
   protected Control styledText( String style, String text ) {
-    return styledText( style, SWT.LEFT, text );
+    return styledText( style, SWT.WRAP, text );
   }
 
   protected Control styledText( String style, int styleFlag, String text ) {
@@ -144,11 +149,11 @@ public abstract class AbstractSlide {
       formData.top = new FormAttachment( 0, spacerSum );
     }
     spacerSum = defaultSpacing;
-    formData.left = new FormAttachment( 0, currentIndent );
+    formData.left = new FormAttachment( 0, leftPadding );
     if( width >= 0 ) {
       formData.width = width;
     } else {
-      formData.right = new FormAttachment( 100 );
+      formData.right = new FormAttachment( 100, rightPadding * -1 );
     }
     if( height >= 0 ) {
       formData.height = height;
@@ -187,7 +192,8 @@ public abstract class AbstractSlide {
     currentFlowWidget = null;
     spacerSum = 0;
     defaultSpacing = 0;
-    currentIndent = 0;
+    leftPadding = 0;
+    rightPadding = 0;
   }
 
   private String listHtml( Object... listItems ) {

@@ -7,6 +7,8 @@ Bundle-Vendor: ECLIPSESOURCE
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.eclipsesource.rap.punchy
 Import-Package: org.eclipse.rap.rwt;version="2.2.0",
+ org.eclipse.rap.rwt.client;version="2.2.0",
+ org.eclipse.rap.rwt.client.service;version="2.2.0",
  org.eclipse.rap.rwt.lifecycle;version="2.2.0",
  org.eclipse.rap.rwt.scripting;version="2.2.0",
  org.eclipse.swt,
