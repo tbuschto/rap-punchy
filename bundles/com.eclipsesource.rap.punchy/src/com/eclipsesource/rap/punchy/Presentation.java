@@ -10,10 +10,16 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +30,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 
 public class Presentation {
@@ -44,8 +52,9 @@ public class Presentation {
   private boolean maximized = true;
   private MenuItem prevItem;
   private MenuItem nextItem;
-  private final Label warning;
+  private Label warning;
   private List<Control> menuControls = new ArrayList<Control>( 10 );
+  private Table slideList;
 
   public Presentation( Composite parent, Point size ) {
     main = new Composite( parent, SWT.NONE );
@@ -53,15 +62,44 @@ public class Presentation {
     slides = new ArrayList<AbstractSlide>();
     createPrevButton( main );
     createStage( main );
+    createWarning( parent, size );
+    createMenu( main );
+    createNextButton( main );
+    createSlideList( stage );
+    main.addListener( SWT.Resize, getMainResizeListener() );
+    main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
+    WidgetUtil.registerDataKeys( IMAGE_KEY );
+  }
+
+  private void createSlideList( Composite parent ) {
+    slideList = new Table( parent, SWT.V_SCROLL | SWT.BORDER );
+    FormData layoutData = new FormData();
+    layoutData.left = new FormAttachment( 0 );
+    layoutData.top = new FormAttachment( 0 );
+    layoutData.bottom = new FormAttachment( 100 );
+    layoutData.width = 300;
+    slideList.setLayoutData( layoutData  );
+    slideList.setVisible( false );
+    slideList.addFocusListener( new FocusAdapter() {
+      @Override
+      public void focusLost( FocusEvent event ) {
+        slideList.setVisible( false );
+      }
+    } );
+    slideList.addSelectionListener( new SelectionAdapter() {
+      @Override
+      public void widgetSelected( SelectionEvent e ) {
+        showSlide( slideList.getSelectionIndex() );
+        slideList.setVisible( false );
+      }
+    } );
+  }
+
+  private void createWarning( Composite parent, Point size ) {
     warning = new Label( main, SWT.CENTER );
     warning.setText( "Minimum size " + size );
     warning.setVisible( false );
     warning.setForeground( new Color( parent.getDisplay(), 255, 40, 40 ) );
-    createMenu( main );
-    createNextButton( main );
-    main.addListener( SWT.Resize, getMainResizeListener() );
-    main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
-    WidgetUtil.registerDataKeys( IMAGE_KEY );
   }
 
   public Control getControl() {
@@ -137,10 +175,24 @@ public class Presentation {
         internalLayout();
       }
     } );
+    final MenuItem slidesItem = new MenuItem( menu, SWT.PUSH );
+    slidesItem.setText( "Slides\tCtrl + S" );
+    slidesItem.setAccelerator( SWT.CONTROL | 'S' );
+    slidesItem.setSelection( true );
+    slidesItem.addListener( SWT.Selection, new Listener() {
+      @Override
+      public void handleEvent( Event event ) {
+        slideList.setVisible( true );
+        slideList.forceFocus();
+      }
+    } );
   }
 
   private void initialize() {
-    // TODO Auto-generated method stub
+    for( Iterator<AbstractSlide> iterator = slides.iterator(); iterator.hasNext(); ) {
+      TableItem tableItem = new TableItem( slideList, SWT.NONE );
+      tableItem.setText( iterator.next().getTitle() );
+    }
   }
 
   private void checkStarted() {
@@ -155,15 +207,28 @@ public class Presentation {
   }
 
   private void showSlide( int index ) {
+    slideList.setSelection( index );
     if( currentSlideControl != null ) {
       detachMenu();
       currentSlideControl.dispose();
     }
     slideIndex = index;
     currentSlideControl = slides.get( slideIndex ).create( stage );
+    FormData layoutData = createFillFormData();
+    currentSlideControl.setLayoutData( layoutData );
+    slideList.moveAbove( currentSlideControl );
     addPresentationMenu( currentSlideControl );
     stage.layout();
     updateNavigation();
+  }
+
+  private static FormData createFillFormData() {
+    FormData layoutData = new FormData();
+    layoutData.left = new FormAttachment( 0 );
+    layoutData.top = new FormAttachment( 0 );
+    layoutData.right = new FormAttachment( 100 );
+    layoutData.bottom = new FormAttachment( 100 );
+    return layoutData;
   }
 
   void addPresentationMenu( Control control ) {
@@ -198,7 +263,7 @@ public class Presentation {
 
   private void createStage( Composite parent ) {
     stage = new Composite( parent, SWT.NONE );
-    stage.setLayout( new FillLayout() );
+    stage.setLayout( new FormLayout() );
     stage.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
   }
 
