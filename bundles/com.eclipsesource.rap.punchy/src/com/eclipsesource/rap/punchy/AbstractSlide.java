@@ -59,7 +59,11 @@ public abstract class AbstractSlide {
   }
 
   protected Control styledText( String style, String text ) {
-    Control control = html( text, SWT.WRAP );
+    return styledText( style, SWT.LEFT, text );
+  }
+
+  protected Control styledText( String style, int styleFlag, String text ) {
+    Control control = html( text, styleFlag );
     styleAs( style, control );
     return control;
   }

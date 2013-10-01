@@ -20,14 +20,16 @@ public class EceEntryPoint extends AbstractEntryPoint {
         new EceSlide( presentation ) {
           @Override
           public String getTitle() {
-            return "Slide 1";
+            return "Welcome";
           }
           @Override
           protected void createContent( Composite slideComposite ) {
             super.createContent( slideComposite );
-            list( "This is something" );
-            flow( new Text( slideComposite, SWT.BORDER ), 200 );
-            list( "I have to say" );
+            spacer( 100 );
+            styledText( "big", SWT.CENTER, "RAP 2.x and Beyond" );
+            spacer( 100 );
+            text( "Presenter:" );
+            list( "Markus Knauer, RAP Co-Lead", "Tim Buschtöns, RAP Comitter" );
           }
         };
         new AbstractSlide( presentation ) {
@@ -37,6 +39,9 @@ public class EceEntryPoint extends AbstractEntryPoint {
           }
           @Override
           protected void createContent( Composite slideComposite ) {
+            list( "This is something" );
+            flow( new Text( slideComposite, SWT.BORDER ), 200 );
+            list( "I have to say" );
             spacer( 200 );
             text( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
           }

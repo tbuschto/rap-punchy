@@ -12,6 +12,8 @@ import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -90,6 +92,11 @@ public class Presentation {
       @Override
       public void widgetSelected( SelectionEvent e ) {
         showSlide( slideList.getSelectionIndex() );
+      }
+    } );
+    slideList.addMouseListener( new MouseAdapter() {
+      @Override
+      public void mouseUp( MouseEvent e ) {
         slideList.setVisible( false );
       }
     } );
@@ -182,8 +189,11 @@ public class Presentation {
     slidesItem.addListener( SWT.Selection, new Listener() {
       @Override
       public void handleEvent( Event event ) {
-        slideList.setVisible( true );
-        slideList.forceFocus();
+        boolean visible = !slideList.getVisible();
+        slideList.setVisible( visible );
+        if( visible ) {
+          slideList.forceFocus();
+        }
       }
     } );
   }
