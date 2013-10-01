@@ -20,7 +20,9 @@ public abstract class AbstractSlide {
   private final Presentation presentation;
   private Composite currentSlideComposite;
   private Control currentFlowWidget;
-  private int spacer = 0;
+  private int spacerSum = 0;
+  private int defaultSpacing = 0;
+  private int currentIndent = 0;
 
   public AbstractSlide( Presentation presentation ) {
     this.presentation = presentation;
@@ -39,14 +41,17 @@ public abstract class AbstractSlide {
     return presentation.indexOfSlide( this );
   }
 
-  public Presentation getPresentation() {
-    return presentation;
+  protected void setSpacing( int spacing ) {
+    defaultSpacing = spacing;
+    spacer( spacing );
   }
 
-  protected Control title() {
-    Control control = html( getTitle(), SWT.LEFT );
-    control.setData( RWT.CUSTOM_VARIANT, "punchyTitle" );
-    return control;
+  protected void setIndent( int indent ) {
+    currentIndent = indent;
+  }
+
+  public Presentation getPresentation() {
+    return presentation;
   }
 
   protected Control text( String text ) {
@@ -58,7 +63,6 @@ public abstract class AbstractSlide {
     styleAs( style, control );
     return control;
   }
-
 
   protected Control image( String name ) {
     return image( name, SWT.LEFT );
@@ -98,7 +102,7 @@ public abstract class AbstractSlide {
   }
 
   protected void spacer( int spacer ) {
-    this.spacer += spacer;
+    this.spacerSum += spacer;
   }
 
   protected void floatRight( Control control ) {
@@ -127,12 +131,12 @@ public abstract class AbstractSlide {
   protected void flow( Control control, int width, int height ) {
     FormData formData = new FormData();
     if( currentFlowWidget != null) {
-      formData.top = new FormAttachment( currentFlowWidget, spacer );
+      formData.top = new FormAttachment( currentFlowWidget, spacerSum );
     } else {
-      formData.top = new FormAttachment( 0, spacer );
+      formData.top = new FormAttachment( 0, spacerSum );
     }
-    spacer = 0;
-    formData.left = new FormAttachment( 0 );
+    spacerSum = defaultSpacing;
+    formData.left = new FormAttachment( 0, currentIndent );
     if( width >= 0 ) {
       formData.width = width;
     } else {
@@ -161,14 +165,21 @@ public abstract class AbstractSlide {
   }
 
   Composite create( Composite stage ) {
+    reset();
     Composite slideComposite = new Composite( stage, SWT.NONE );
     slideComposite.setData( RWT.CUSTOM_VARIANT, "punchySlide" );
     slideComposite.setLayout( new FormLayout() );
     currentSlideComposite = slideComposite;
     createContent( slideComposite );
+    return slideComposite;
+  }
+
+  public void reset() {
     currentSlideComposite = null;
     currentFlowWidget = null;
-    return slideComposite;
+    spacerSum = 0;
+    defaultSpacing = 0;
+    currentIndent = 0;
   }
 
   private String listHtml( Object... listItems ) {
