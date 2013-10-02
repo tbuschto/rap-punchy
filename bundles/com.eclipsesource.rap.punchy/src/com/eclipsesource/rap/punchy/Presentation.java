@@ -22,6 +22,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -61,6 +62,7 @@ public class Presentation {
   private Label warning;
   private List<Control> menuControls = new ArrayList<Control>( 10 );
   private Table slideList;
+  private Composite sideBar;
 
   public Presentation( Composite parent, Point size ) {
     main = new Composite( parent, SWT.NONE );
@@ -71,7 +73,7 @@ public class Presentation {
     createWarning( parent, size );
     createMenu( main );
     createNextButton( main );
-    createSlideList( stage );
+    createSideBar( stage );
     main.addListener( SWT.Resize, getMainResizeListener() );
     main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     WidgetUtil.registerDataKeys( IMAGE_KEY );
@@ -92,34 +94,37 @@ public class Presentation {
     } );
   }
 
-  private void createSlideList( Composite parent ) {
-    slideList = new Table( parent, SWT.V_SCROLL | SWT.BORDER );
+  private void createSideBar( Composite parent ) {
+    sideBar = new Composite( parent, SWT.BORDER );
+    sideBar.setLayout( new FillLayout() );
+    sideBar.setData( RWT.CUSTOM_VARIANT, "punchyLeftSideBar" );
+    slideList = new Table( sideBar, SWT.V_SCROLL );
     new TableColumn( slideList, SWT.NONE ).setWidth( 300 );
     FormData layoutData = new FormData();
     layoutData.left = new FormAttachment( 0 );
     layoutData.top = new FormAttachment( 0 );
     layoutData.bottom = new FormAttachment( 100 );
     layoutData.width = 300;
-    slideList.setLayoutData( layoutData  );
-    slideList.setVisible( false );
+    sideBar.setLayoutData( layoutData );
+    sideBar.setVisible( false );
     slideList.addFocusListener( new FocusAdapter() {
       @Override
       public void focusLost( FocusEvent event ) {
-        slideList.setVisible( false );
+        sideBar.setVisible( false );
       }
     } );
     slideList.addSelectionListener( new SelectionAdapter() {
       @Override
       public void widgetDefaultSelected( SelectionEvent e ) {
         showSlide( slideList.getSelectionIndex() );
-        slideList.setVisible( false );
+        sideBar.setVisible( false );
       };
     } );
     slideList.addMouseListener( new MouseAdapter() {
       @Override
       public void mouseUp( MouseEvent e ) {
         showSlide( slideList.getSelectionIndex() );
-        slideList.setVisible( false );
+        sideBar.setVisible( false );
       }
     } );
   }
@@ -207,8 +212,8 @@ public class Presentation {
     slidesItem.addListener( SWT.Selection, new Listener() {
       @Override
       public void handleEvent( Event event ) {
-        boolean visible = !slideList.getVisible();
-        slideList.setVisible( visible );
+        boolean visible = !sideBar.getVisible();
+        sideBar.setVisible( visible );
         if( visible ) {
           slideList.forceFocus();
         }
@@ -245,8 +250,7 @@ public class Presentation {
       currentSlideControl = slide.create( stage );
       FormData layoutData = createFillFormData();
       currentSlideControl.setLayoutData( layoutData );
-      slideList.moveAbove( currentSlideControl );
-      addPresentationMenu( currentSlideControl );
+      sideBar.moveAbove( currentSlideControl );
       stage.layout();
       updateNavigationUI();
       BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );

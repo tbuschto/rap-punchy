@@ -29,3 +29,6 @@
   font: 62px Arial;
 }
 
+.punchyLeftSideBar {
+  animation: flyInLeft 200ms ease-out, flyOutLeft 200ms ease-out;
+}

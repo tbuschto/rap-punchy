@@ -19,9 +19,9 @@ public abstract class EceSlide extends AbstractSlide {
   @Override
   protected void createContent( Composite slideComposite ) {
     header( slideComposite );
+    footer( slideComposite );
     setSpacing( 8 );
     spacer( 20 );
-    footer( slideComposite );
     setPaddingLeft( 30 );
     setPaddingRight( 30 );
   }
@@ -46,6 +46,7 @@ public abstract class EceSlide extends AbstractSlide {
     Label logo = new Label( header, SWT.LEFT );
     logo.setImage( loadImage( "es_small.png" ) );
     logo.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
+    addPresentationMenu( logo );
     flow( header, -1, 57 );
   }
 
@@ -62,7 +63,6 @@ public abstract class EceSlide extends AbstractSlide {
     label.setText( ( getSlideNumber() + 1 ) + "/" + getSlidesCount() );
     styleAs( "footer", label );
     toBottom( footer, -1, 40 );
-    addPresentationMenu( footer );
   }
 
 }
