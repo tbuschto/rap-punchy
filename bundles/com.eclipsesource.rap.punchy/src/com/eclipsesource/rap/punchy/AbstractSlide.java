@@ -180,7 +180,6 @@ public abstract class AbstractSlide {
   Composite create( Composite stage ) {
     reset();
     Composite slideComposite = new Composite( stage, SWT.NONE );
-    slideComposite.setData( RWT.CUSTOM_VARIANT, "punchySlide" );
     slideComposite.setLayout( new FormLayout() );
     currentSlideComposite = slideComposite;
     createContent( slideComposite );

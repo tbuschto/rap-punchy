@@ -1,4 +1,4 @@
-.punchySlide {
+.punchySlide, .punchySlideIn, .punchySlideOut, .punchySlideJump {
   background-image: gradient(
     linear, left top, left bottom,
     from( #cddced ),
@@ -6,8 +6,20 @@
   );
 }
 
+.punchySlideForwards {
+  animation: flyInRight 300ms linear, fadeOut 200ms ease-in;
+}
+
+.punchySlideBackwards {
+  animation: flyInLeft 300ms linear, fadeOut 200ms ease-in;
+}
+
 .punchyHeader {
   background-color: rgb( 230, 237, 245 );
+}
+
+.punchySlideJump {
+  animation: fadeIn 200ms ease-out, fadeOut 200ms ease-in;
 }
 
 .punchyTitle {

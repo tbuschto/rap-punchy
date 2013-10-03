@@ -239,22 +239,29 @@ public class Presentation {
     }
   }
 
-  private void showSlide( int index ) {
-    if( index != slideIndex ) {
+  private void showSlide( int slideIndex ) {
+    if( this.slideIndex != slideIndex ) {
       if( currentSlideControl != null ) {
         detachMenu();
         currentSlideControl.dispose();
       }
-      slideIndex = index;
       AbstractSlide slide = slides.get( slideIndex );
       currentSlideControl = slide.create( stage );
+      if( sideBar.isVisible() ) {
+        currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideJump" );
+      } else if( slideIndex < this.slideIndex ) {
+        currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideBackwards" );
+      } else {
+        currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideForwards" );
+      }
+      this.slideIndex = slideIndex;
       FormData layoutData = createFillFormData();
       currentSlideControl.setLayoutData( layoutData );
       sideBar.moveAbove( currentSlideControl );
       stage.layout();
       updateNavigationUI();
       BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
-      navigation.pushState( "slide" + ( index + 1 ), slide.getTitle() );
+      navigation.pushState( "slide" + ( slideIndex + 1 ), slide.getTitle() );
     }
   }
 
