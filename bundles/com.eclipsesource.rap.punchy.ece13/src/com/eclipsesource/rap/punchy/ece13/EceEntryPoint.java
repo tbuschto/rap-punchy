@@ -4,7 +4,10 @@ import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Text;
 
 import com.eclipsesource.rap.punchy.Presentation;
 
@@ -49,7 +52,23 @@ public class EceEntryPoint extends AbstractEntryPoint {
         new EceSlide( presentation ) {
           @Override
           public String getTitle() {
-            return "Slide 3";
+            return "Control Test";
+          }
+          @Override
+          protected void createContent( Composite slideComposite ) {
+            super.createContent( slideComposite );
+            text( "A Text (widget)" );
+            flow( new Text( slideComposite, SWT.BORDER ) );
+            text( "A Scale" );
+            flow( "transparent", new Scale( slideComposite, SWT.HORIZONTAL ) );
+            text( "A Button" );
+            flow( new Button( slideComposite, SWT.ARROW ) );
+          }
+        };
+        new EceSlide( presentation ) {
+          @Override
+          public String getTitle() {
+            return "List Test";
           }
           @Override
           protected void createContent( Composite slideComposite ) {
@@ -64,6 +83,22 @@ public class EceEntryPoint extends AbstractEntryPoint {
                 "World"
               }
             );
+          }
+        };
+        new EceSlide( presentation ) {
+          @Override
+          public String getTitle() {
+            return "Code Test";
+          }
+          @Override
+          protected void createContent( Composite slideComposite ) {
+            super.createContent( slideComposite );
+            text( "Java:" );
+            snippet( "java", 500, 80, "protected void createContents( Composite parent ) {\n  new Stuff();\n}" );
+            text( "JavaScript:" );
+            snippet( "javascript", 200, 80, "function foo() {\n  new Stuff();\n}" );
+            text( "CSS:" );
+            snippet( "css", 300, 80, ".myClass {\n  background-color: #ffaaff;\n}" );
           }
         };
         presentation.start();

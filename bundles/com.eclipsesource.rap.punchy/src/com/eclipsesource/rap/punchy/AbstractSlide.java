@@ -1,5 +1,10 @@
 package com.eclipsesource.rap.punchy;
 
+import static com.eclipsesource.rap.punchy.HtmlDocument.link;
+import static com.eclipsesource.rap.punchy.HtmlDocument.locationOf;
+import static com.eclipsesource.rap.punchy.HtmlDocument.pre;
+import static com.eclipsesource.rap.punchy.HtmlDocument.script;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -7,6 +12,7 @@ import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
@@ -34,9 +40,14 @@ public abstract class AbstractSlide {
     presentation.addSlide( this );
   }
 
+  ///////////////
+  // abstract API
+
   public abstract String getTitle();
   protected abstract void createContent( Composite slideComposite );
 
+  //////////////////
+  // Slide Creation
 
   protected int getSlidesCount() {
     return presentation.getSlidesCount();
@@ -153,15 +164,52 @@ public abstract class AbstractSlide {
     presentation.addPresentationMenu( control );
   }
 
+  protected void snippet( String lang, int width, int height, String source ) {
+    HtmlDocument doc = new HtmlDocument();
+    doc.head.content(
+      link().type( "text/css" ).href( locationOf( "prettify.css" ) ).rel( "stylesheet" ),
+      script().type( "text/javascript" ).src( locationOf( "prettify.js" ) )
+    );
+    doc.body.attr( "onload", "prettyPrint()" );
+    doc.body.style( "padding-left:6px" );
+    doc.body.content(
+      pre().cssClass( "prettyprint lang-" + lang ).content(
+        source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" )
+      )
+    );
+    Browser browser = new Browser( currentSlideComposite, SWT.BORDER );
+    browser.setText( doc.toString() );
+    styleAs( "snippet", browser );
+    flow( browser, width, height );
+  }
+
   protected void flow( Control control ) {
     flow( control, -1, -1 );
+  }
+
+  protected void flow( String style, Control control ) {
+    flow( control, -1, -1 );
+    styleAs( style, control );
   }
 
   protected void flow( Control control, int width ) {
     flow( control, width, -1 );
   }
 
+  protected void flow( String style, Control control, int width ) {
+    flow( control, width, -1 );
+    styleAs( style, control );
+  }
+
+  protected void flow( String style, Control control, int width, int height ) {
+    flow( control, width, height );
+    styleAs( style, control );
+  }
+
   protected void flow( Control control, int width, int height ) {
+    if( flowWidgets.indexOf( control ) != -1 ) {
+      throw new IllegalStateException();
+    }
     FormData formData = new FormData();
     if( !flowWidgets.isEmpty() ) {
       formData.top = new FormAttachment( flowWidgets.get( flowWidgets.size() - 1 ), spacerSum );
@@ -201,6 +249,9 @@ public abstract class AbstractSlide {
     control.setLayoutData( formData );
   }
 
+  //////////////////
+  // Package Private
+
   Composite create( Composite stage ) {
     reset();
     Composite slideComposite = new Composite( stage, SWT.NONE );
@@ -210,7 +261,10 @@ public abstract class AbstractSlide {
     return slideComposite;
   }
 
-  public void reset() {
+  ////////////
+  // Internals
+
+  private void reset() {
     currentSlideComposite = null;
     flowWidgets = new ArrayList<Control>();
     spacerSum = 0;

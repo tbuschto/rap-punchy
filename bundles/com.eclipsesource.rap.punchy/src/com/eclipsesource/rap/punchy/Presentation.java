@@ -65,6 +65,7 @@ public class Presentation {
   private Composite sideBar;
 
   public Presentation( Composite parent, Point size ) {
+    registerResources();
     main = new Composite( parent, SWT.NONE );
     minsize = size;
     slides = new ArrayList<AbstractSlide>();
@@ -78,6 +79,21 @@ public class Presentation {
     main.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLACK ) );
     WidgetUtil.registerDataKeys( IMAGE_KEY );
     addNavigationListener();
+  }
+
+  private void registerResources() {
+    if( !RWT.getResourceManager().isRegistered( "prettify.js" ) ) {
+      InputStream jsStream = getClass().getResourceAsStream( "prettify.js" );
+      InputStream cssStream = getClass().getResourceAsStream( "prettify.css" );
+      RWT.getResourceManager().register( "prettify.js", jsStream );
+      RWT.getResourceManager().register( "prettify.css", cssStream );
+      try {
+        jsStream.close();
+        cssStream.close();
+      } catch( IOException e ) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private void addNavigationListener() {

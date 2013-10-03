@@ -1,10 +1,14 @@
-.punchySlide, .punchySlideForwards, punchySlideForwards, .punchySlideJump {
+.punchySlide, .punchySlideForwards, .punchySlideBackwards, .punchySlideJump {
   background-image: gradient(
     linear, left top, left bottom,
     from( #cddced ),
     to( #ffffff )
   );
   animation: fadeOut 200ms ease-in;
+}
+
+.punchyTransparent {
+  background-color: transparent;
 }
 
 .punchySlideBackwards {
