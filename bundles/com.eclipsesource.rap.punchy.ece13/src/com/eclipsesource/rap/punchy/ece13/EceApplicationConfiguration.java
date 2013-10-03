@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.Application;
-import org.eclipse.rap.rwt.application.Application.OperationMode;
 import org.eclipse.rap.rwt.application.ApplicationConfiguration;
 
 
@@ -16,8 +15,6 @@ public class EceApplicationConfiguration implements ApplicationConfiguration {
         Map<String, String> properties = new HashMap<String, String>();
         application.addStyleSheet( RWT.DEFAULT_THEME_ID, "com/eclipsesource/rap/punchy/ece13/ece.css" );
         application.addEntryPoint( "/ece13", EceEntryPoint.class, properties );
-        // Required for deep link support:
-        application.setOperationMode( OperationMode.SWT_COMPATIBILITY );
     }
 
 }

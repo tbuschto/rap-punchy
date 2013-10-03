@@ -88,7 +88,7 @@ public class Presentation {
         String state = event.getState();
         if( state.startsWith( "slide" ) )  {
           int slide = Integer.parseInt( state.substring( 5 ) ) - 1;
-          showSlide( slide );
+          showSlide( slide, false );
         }
       }
     } );
@@ -116,14 +116,14 @@ public class Presentation {
     slideList.addSelectionListener( new SelectionAdapter() {
       @Override
       public void widgetDefaultSelected( SelectionEvent e ) {
-        showSlide( slideList.getSelectionIndex() );
+        showSlide( slideList.getSelectionIndex(), true );
         sideBar.setVisible( false );
       };
     } );
     slideList.addMouseListener( new MouseAdapter() {
       @Override
       public void mouseUp( MouseEvent e ) {
-        showSlide( slideList.getSelectionIndex() );
+        showSlide( slideList.getSelectionIndex(), true );
         sideBar.setVisible( false );
       }
     } );
@@ -143,17 +143,17 @@ public class Presentation {
   public void start() {
     checkNotStarted();
     initialize();
-    showSlide( 0 );
+    showSlide( 0, false );
   }
 
   public void next() {
     checkStarted();
-    showSlide( slideIndex + 1 );
+    showSlide( slideIndex + 1, true );
   }
 
   public void prev() {
     checkStarted();
-    showSlide( slideIndex - 1 );
+    showSlide( slideIndex - 1, true );
   }
 
   void addSlide( AbstractSlide slide ) {
@@ -239,7 +239,7 @@ public class Presentation {
     }
   }
 
-  private void showSlide( int slideIndex ) {
+  private void showSlide( int slideIndex, boolean animated ) {
     if( this.slideIndex != slideIndex ) {
       if( currentSlideControl != null ) {
         detachMenu();
@@ -247,12 +247,14 @@ public class Presentation {
       }
       AbstractSlide slide = slides.get( slideIndex );
       currentSlideControl = slide.create( stage );
-      if( sideBar.isVisible() ) {
-        currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideJump" );
-      } else if( slideIndex < this.slideIndex ) {
+      if( !animated ) {
+        currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlide" );
+      } else if( slideIndex == this.slideIndex - 1 ) {
         currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideBackwards" );
-      } else {
+      } else if( slideIndex == this.slideIndex + 1 ) {
         currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideForwards" );
+      } else {
+        currentSlideControl.setData( RWT.CUSTOM_VARIANT, "punchySlideJump" );
       }
       this.slideIndex = slideIndex;
       FormData layoutData = createFillFormData();

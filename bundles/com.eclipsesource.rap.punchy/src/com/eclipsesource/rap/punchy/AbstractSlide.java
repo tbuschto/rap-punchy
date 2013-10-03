@@ -2,10 +2,13 @@ package com.eclipsesource.rap.punchy;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -19,11 +22,12 @@ public abstract class AbstractSlide {
 
   private final Presentation presentation;
   private Composite currentSlideComposite;
-  private Control currentFlowWidget;
+  private List<Control> flowWidgets;
   private int spacerSum = 0;
   private int defaultSpacing = 0;
   private int leftPadding = 0;
   private int rightPadding = 0;
+  private int rightFlow = 0;
 
   public AbstractSlide( Presentation presentation ) {
     this.presentation = presentation;
@@ -115,11 +119,27 @@ public abstract class AbstractSlide {
   }
 
   protected void floatRight( Control control ) {
-
+    Point computeSize = control.computeSize( SWT.DEFAULT, SWT.DEFAULT );
+    floatRight( control, computeSize.x, computeSize.y );
   }
 
-  protected void clear( Control control ) {
+  protected void floatRight( Control control, int width, int Height ) {
+    if( flowWidgets.indexOf( control ) == -1) {
+      flow( control );
+    }
+    if( flowWidgets.indexOf( control ) != flowWidgets.size() -1 ) {
+      throw new IllegalStateException();
+    }
+    flowWidgets.remove( flowWidgets.size() -1  );
+    FormData formData = ( FormData )control.getLayoutData();
+    formData.width = width;
+    rightFlow = width;
+    formData.left = null;
+    formData.right = new FormAttachment( 100, rightPadding * -1 );
+  }
 
+  protected void clearFloat() {
+    rightFlow = 0;
   }
 
   protected void styleAs( String style, Control... control ) {
@@ -143,8 +163,8 @@ public abstract class AbstractSlide {
 
   protected void flow( Control control, int width, int height ) {
     FormData formData = new FormData();
-    if( currentFlowWidget != null) {
-      formData.top = new FormAttachment( currentFlowWidget, spacerSum );
+    if( !flowWidgets.isEmpty() ) {
+      formData.top = new FormAttachment( flowWidgets.get( flowWidgets.size() - 1 ), spacerSum );
     } else {
       formData.top = new FormAttachment( 0, spacerSum );
     }
@@ -153,13 +173,17 @@ public abstract class AbstractSlide {
     if( width >= 0 ) {
       formData.width = width;
     } else {
-      formData.right = new FormAttachment( 100, rightPadding * -1 );
+      int offsetRight = rightPadding * -1;
+      if( rightFlow != 0 ) {
+        offsetRight -= ( defaultSpacing + rightFlow );
+      }
+      formData.right = new FormAttachment( 100, offsetRight );
     }
     if( height >= 0 ) {
       formData.height = height;
     }
     control.setLayoutData( formData );
-    currentFlowWidget = control;
+    flowWidgets.add( control );
   }
 
   protected void toBottom( Control control, int width, int height ) {
@@ -188,7 +212,7 @@ public abstract class AbstractSlide {
 
   public void reset() {
     currentSlideComposite = null;
-    currentFlowWidget = null;
+    flowWidgets = new ArrayList<Control>();
     spacerSum = 0;
     defaultSpacing = 0;
     leftPadding = 0;

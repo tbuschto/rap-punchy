@@ -5,7 +5,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 import com.eclipsesource.rap.punchy.Presentation;
 
@@ -34,16 +33,17 @@ public class EceEntryPoint extends AbstractEntryPoint {
         new EceSlide( presentation ) {
           @Override
           public String getTitle() {
-            return "Slide 2";
+            return "Image Test";
           }
           @Override
           protected void createContent( Composite slideComposite ) {
             super.createContent( slideComposite );
-            list( "This is something" );
-            flow( new Text( slideComposite, SWT.BORDER ), 200 );
-            list( "I have to say" );
-            spacer( 200 );
-            text( "Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
+            spacer( 20 );
+            floatRight( image( "clients.png" ) );
+            spacer( 15 );
+            text( "Text </br>that is way too long Text that is way too long and needs overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
+            clearFloat();
+            text( "Moret Text that is text with text lalalaa All play and no work make me a good employee" );
           }
         };
         new EceSlide( presentation ) {

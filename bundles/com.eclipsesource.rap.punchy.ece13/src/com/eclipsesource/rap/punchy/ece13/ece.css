@@ -1,25 +1,26 @@
-.punchySlide, .punchySlideIn, .punchySlideOut, .punchySlideJump {
+.punchySlide, .punchySlideForwards, punchySlideForwards, .punchySlideJump {
   background-image: gradient(
     linear, left top, left bottom,
     from( #cddced ),
     to( #ffffff )
   );
-}
-
-.punchySlideForwards {
-  animation: flyInRight 300ms linear, fadeOut 200ms ease-in;
+  animation: fadeOut 200ms ease-in;
 }
 
 .punchySlideBackwards {
   animation: flyInLeft 300ms linear, fadeOut 200ms ease-in;
 }
 
-.punchyHeader {
-  background-color: rgb( 230, 237, 245 );
+.punchySlideForwards {
+  animation: flyInRight 300ms linear, fadeOut 200ms ease-in;
 }
 
 .punchySlideJump {
   animation: fadeIn 200ms ease-out, fadeOut 200ms ease-in;
+}
+
+.punchyHeader {
+  background-color: rgb( 230, 237, 245 );
 }
 
 .punchyTitle {
@@ -31,7 +32,7 @@
   color: white;
 }
 
-.punchyList, .punchyText {
+.punchyList, .punchyText, .punchyImage {
   background-color: transparent;
   font: 32px Arial;
 }
