@@ -32,7 +32,7 @@ public class HtmlDocument {
   }
 
   public static Element script() {
-    return new Element( "script" ).content( "" );
+    return new Element( "script" ).innerHTML( "" );
   }
 
   public static Element link() {
@@ -41,6 +41,10 @@ public class HtmlDocument {
 
   public static Element pre() {
     return new Element( "pre" );
+  }
+
+  public static String escape( final String text ) {
+    return text.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" );
   }
 
   public static class Element {
@@ -90,7 +94,7 @@ public class HtmlDocument {
       return this;
     }
 
-    public Element content( Object... contentObjects ) {
+    public Element innerHTML( Object... contentObjects ) {
       content = null;
       return addContent( contentObjects );
     }
@@ -130,6 +134,15 @@ public class HtmlDocument {
 
   public Element head = new Element( "head" );
   public Element body = new Element( "body" );
+
+
+  public HtmlDocument() {
+    html();
+  };
+
+  public void html() {
+    //intended to be overwritten
+  }
 
   @Override
   public String toString() {

@@ -1,10 +1,5 @@
 package com.eclipsesource.rap.punchy;
 
-import static com.eclipsesource.rap.punchy.HtmlDocument.link;
-import static com.eclipsesource.rap.punchy.HtmlDocument.locationOf;
-import static com.eclipsesource.rap.punchy.HtmlDocument.pre;
-import static com.eclipsesource.rap.punchy.HtmlDocument.script;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -171,19 +166,23 @@ public abstract class AbstractSlide {
     presentation.addPresentationMenu( control );
   }
 
-  protected void snippet( String lang, int width, int height, String source ) {
-    HtmlDocument doc = new HtmlDocument();
-    doc.head.content(
-      link().type( "text/css" ).href( locationOf( "prettify.css" ) ).rel( "stylesheet" ),
-      script().type( "text/javascript" ).src( locationOf( "prettify.js" ) )
-    );
-    doc.body.attr( "onload", "prettyPrint()" );
-    doc.body.style( "padding-left:6px" );
-    doc.body.content(
-      pre().cssClass( "prettyprint lang-" + lang ).content(
-        source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" )
-      )
-    );
+  protected void snippet( final String lang, int width, int height, final String source ) {
+    String doc = new HtmlDocument() {
+      @Override
+      public void html() {
+        head.innerHTML(
+          link().type( "text/css" ).href( locationOf( "prettify.css" ) ).rel( "stylesheet" ),
+          script().type( "text/javascript" ).src( locationOf( "prettify.js" ) )
+        );
+        body.attr( "onload", "prettyPrint()" );
+        body.style( "padding-left:6px" );
+        body.innerHTML(
+          pre().cssClass( "prettyprint lang-" + lang ).innerHTML(
+            escape( source )
+          )
+        );
+      }
+    }.toString();
     Browser browser = new Browser( currentSlideComposite, SWT.BORDER );
     browser.setText( doc.toString() );
     styleAs( "snippet", browser );
