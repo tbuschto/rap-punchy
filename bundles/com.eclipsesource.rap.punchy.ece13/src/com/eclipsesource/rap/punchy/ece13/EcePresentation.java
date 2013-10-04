@@ -45,7 +45,7 @@ public class EcePresentation {
         spacer( 20 );
         floatRight( image( "clients.png" ) );
         spacer( 15 );
-        text( "Text </br>that is way too is way too long and needs overflow overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
+        text( SWT.DEFAULT, 380, "Text </br>that is way too is way too long and needs overflow overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
         clearFloat();
         text( "Moret Text that is text with text lalalaa All play and no work make me a good employee" );
       }

@@ -80,16 +80,44 @@ public abstract class AbstractSlide {
   }
 
   protected Control text( String text ) {
-    return styledText( "text", text );
+    return text( SWT.DEFAULT, SWT.DEFAULT, SWT.WRAP, text );
+  }
+
+  protected Control text( int width, int height, String text ) {
+    return text( width, height, SWT.WRAP, text );
+  }
+
+  protected Control text( int style, String text ) {
+    return text( SWT.DEFAULT, SWT.DEFAULT, style, text );
+  }
+
+  protected Control text( int width, int height, int style, String text ) {
+    return styledText( "text", width, height, style, text );
   }
 
   protected Control styledText( String style, String text ) {
-    return styledText( style, SWT.WRAP, text );
+    return styledText( style, SWT.DEFAULT, SWT.DEFAULT, SWT.WRAP, text );
   }
 
   protected Control styledText( String style, int styleFlag, String text ) {
+    return styledText( style, SWT.DEFAULT, SWT.DEFAULT, styleFlag, text );
+  }
+
+  protected Control styledText( String style, int width, int height, String text ) {
+    return styledText( style, width, height, SWT.WRAP, text );
+  }
+
+  protected Control styledText( String style, int width, int height, int styleFlag, String text ) {
     Control control = html( text, styleFlag );
+    flow( control, width, height );
     styleAs( style, control );
+    return control;
+  }
+
+  protected Control list( Object... listItems ) {
+    Control control = html( listHtml( listItems ), SWT.LEFT );
+    control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
+    flow( control );
     return control;
   }
 
@@ -115,19 +143,6 @@ public abstract class AbstractSlide {
       e.printStackTrace();
     }
     return image;
-  }
-
-  protected Control list( Object... listItems ) {
-    Control control = html( listHtml( listItems ), SWT.LEFT );
-    control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
-    return control;
-  }
-  protected Control html( Object content, int style ) {
-    Label label = new Label( currentSlideComposite, style );
-    label.setText( content.toString() );
-    label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-    flow( label );
-    return label;
   }
 
   protected void spacer( int spacer ) {
@@ -269,6 +284,14 @@ public abstract class AbstractSlide {
 
   ////////////
   // Internals
+
+
+  private Control html( Object content, int style ) {
+    Label label = new Label( currentSlideComposite, style );
+    label.setText( content.toString() );
+    label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+    return label;
+  }
 
   private void reset() {
     currentSlideComposite = null;
