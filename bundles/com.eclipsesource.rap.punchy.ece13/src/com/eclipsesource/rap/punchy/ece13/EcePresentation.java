@@ -75,7 +75,7 @@ public class EcePresentation {
     new EceSlide( presentation ) {
       @Override
       public String getTitle() {
-        return "RAP 2.3";
+        return "RAP 2.2";
       }
       @Override
       protected void createContent( Composite slideComposite ) {
