@@ -52,7 +52,7 @@ public class EcePresentation {
           "API Clean-Up",
           "Client Services API",
           "Custom Widget API",
-          "New Name: </br><b>R</b>emote <b>A</b>pplication <b>P</b>latform"
+          "New Name: </br><big style='line-height:80px'><b>R</b>emote <b>A</b>pplication <b>P</b>latform</big>"
         );
       }
     };
@@ -67,7 +67,7 @@ public class EcePresentation {
         spacer( 25 );
         list(
          "Released 4 months after 2.0",
-         "A lot minor enahancements and fixes",
+         "Many minor enahancements and fixes",
          "Improved Multi-Tab Browsing"
         );
       }
