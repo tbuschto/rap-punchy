@@ -33,7 +33,8 @@ public abstract class AbstractSlide {
   private int defaultSpacing = 0;
   private int leftPadding = 0;
   private int rightPadding = 0;
-  private int rightFlow = 0;
+  private Control rightFlowWidget = null;
+  private int listSpacing = 0;
 
   public AbstractSlide( Presentation presentation ) {
     this.presentation = presentation;
@@ -60,6 +61,10 @@ public abstract class AbstractSlide {
   protected void setSpacing( int spacing ) {
     defaultSpacing = spacing;
     spacer( spacing );
+  }
+
+  protected void setListSpacing( int spacing ) {
+    listSpacing = spacing;
   }
 
   protected void setPaddingLeft( int value ) {
@@ -144,13 +149,13 @@ public abstract class AbstractSlide {
     flowWidgets.remove( flowWidgets.size() -1  );
     FormData formData = ( FormData )control.getLayoutData();
     formData.width = width;
-    rightFlow = width;
+    rightFlowWidget = control;
     formData.left = null;
     formData.right = new FormAttachment( 100, rightPadding * -1 );
   }
 
   protected void clearFloat() {
-    rightFlow = 0;
+    rightFlowWidget = null;
   }
 
   protected void styleAs( String style, Control... control ) {
@@ -222,8 +227,9 @@ public abstract class AbstractSlide {
       formData.width = width;
     } else {
       int offsetRight = rightPadding * -1;
-      if( rightFlow != 0 ) {
-        offsetRight -= ( defaultSpacing + rightFlow );
+      if( rightFlowWidget != null ) {
+        FormData rightFormData = ( FormData )rightFlowWidget.getLayoutData();
+        offsetRight -= ( defaultSpacing + rightFormData.width );
       }
       formData.right = new FormAttachment( 100, offsetRight );
     }
@@ -279,7 +285,7 @@ public abstract class AbstractSlide {
     boolean merge = false;
     for( int i = 0; i < listItems.length; i++ ) {
       if( !merge ) {
-        htmlBuilder.append( "<li>" );
+        htmlBuilder.append( "<li style=\"margin-bottom:" + listSpacing  + "px\" >" );
       }
       merge = false;
       if( listItems[ i ] instanceof String[] ) {

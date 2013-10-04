@@ -21,6 +21,7 @@ public abstract class EceSlide extends AbstractSlide {
     header( slideComposite );
     footer( slideComposite );
     setSpacing( 8 );
+    setListSpacing( 8 );
     spacer( 20 );
     setPaddingLeft( 30 );
     setPaddingRight( 30 );

@@ -292,7 +292,7 @@ public class Presentation {
     return layoutData;
   }
 
-  void addPresentationMenu( Control control ) {
+  void addPresentationMenu( Control control ) { // TODO : Broken!
     control.setMenu( menu );
     menuControls.add( control );
   }
