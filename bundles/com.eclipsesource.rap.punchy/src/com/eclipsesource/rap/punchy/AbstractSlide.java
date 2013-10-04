@@ -14,7 +14,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -33,7 +32,6 @@ public abstract class AbstractSlide {
   private int defaultSpacing = 0;
   private int leftPadding = 0;
   private int rightPadding = 0;
-  private Control rightFlowWidget = null;
   private int listSpacing = 0;
 
   public AbstractSlide( Presentation presentation ) {
@@ -115,7 +113,7 @@ public abstract class AbstractSlide {
   }
 
   protected Control list( Object... listItems ) {
-    Control control = html( listHtml( listItems ), SWT.LEFT );
+    Control control = html( listHtml( false, listItems ), SWT.LEFT );
     control.setData( RWT.CUSTOM_VARIANT, "punchyList" );
     flow( control );
     return control;
@@ -149,12 +147,7 @@ public abstract class AbstractSlide {
     this.spacerSum += spacer;
   }
 
-  protected void floatRight( Control control ) {
-    Point computeSize = control.computeSize( SWT.DEFAULT, SWT.DEFAULT );
-    floatRight( control, computeSize.x, computeSize.y );
-  }
-
-  protected void floatRight( Control control, int width, int Height ) {
+  protected void toRight( Control control ) {
     if( flowWidgets.indexOf( control ) == -1) {
       flow( control );
     }
@@ -163,14 +156,8 @@ public abstract class AbstractSlide {
     }
     flowWidgets.remove( flowWidgets.size() -1  );
     FormData formData = ( FormData )control.getLayoutData();
-    formData.width = width;
-    rightFlowWidget = control;
     formData.left = null;
     formData.right = new FormAttachment( 100, rightPadding * -1 );
-  }
-
-  protected void clearFloat() {
-    rightFlowWidget = null;
   }
 
   protected void styleAs( String style, Control... control ) {
@@ -241,12 +228,7 @@ public abstract class AbstractSlide {
     if( width >= 0 ) {
       formData.width = width;
     } else {
-      int offsetRight = rightPadding * -1;
-      if( rightFlowWidget != null ) {
-        FormData rightFormData = ( FormData )rightFlowWidget.getLayoutData();
-        offsetRight -= ( defaultSpacing + rightFormData.width );
-      }
-      formData.right = new FormAttachment( 100, offsetRight );
+      formData.right = new FormAttachment( 100, rightPadding * -1 );
     }
     if( height >= 0 ) {
       formData.height = height;
@@ -302,9 +284,14 @@ public abstract class AbstractSlide {
     rightPadding = 0;
   }
 
-  private String listHtml( Object... listItems ) {
+  private String listHtml( boolean sublist, Object... listItems ) {
     StringBuilder htmlBuilder = new StringBuilder();
-    htmlBuilder.append( "<ul style=\"margin:0px\">" );
+    String style = "style=\"margin:0px";
+    if( sublist ) {
+      style += ";margin-top:" + listSpacing + "px";
+    }
+    style += "\"";
+    htmlBuilder.append( "<ul " + style + ">" );
     boolean merge = false;
     for( int i = 0; i < listItems.length; i++ ) {
       if( !merge ) {
@@ -312,7 +299,7 @@ public abstract class AbstractSlide {
       }
       merge = false;
       if( listItems[ i ] instanceof String[] ) {
-        htmlBuilder.append( listHtml( ( Object[] )listItems[ i ] ) );
+        htmlBuilder.append( listHtml( true, ( Object[] )listItems[ i ] ) );
       } else {
         htmlBuilder.append( listItems[ i ] );
       }
