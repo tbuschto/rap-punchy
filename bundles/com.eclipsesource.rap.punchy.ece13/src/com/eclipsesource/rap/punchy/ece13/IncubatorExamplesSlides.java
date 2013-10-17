@@ -36,6 +36,23 @@ public class IncubatorExamplesSlides {
     new EceSlide( presentation ) {
       @Override
       public String getTitle() {
+        return "Incubator: DropDown / AutoSuggest";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        spacer( 50 );
+        Composite example = new Composite( slideComposite, SWT.NONE );
+        new DropDownDemo().createContents( example );
+        flow( "transparent", example, SWT.DEFAULT, 50 );
+        Composite example2 = new Composite( slideComposite, SWT.NONE );
+        new AutoSuggestSnippet().createContents( example2 );
+        flow( "transparent", example2, SWT.DEFAULT, 300 );
+      }
+    };
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
         return "RAP Incubator";
       }
       @Override
