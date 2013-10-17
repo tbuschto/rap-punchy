@@ -6,6 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ECLIPSESOURCE
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,3.0.0)",
- org.eclipse.rap.jface
+ org.eclipse.rap.jface,
+ org.eclipse.rap.nebula.jface.gridviewer;bundle-version="0.1.0",
+ org.eclipse.rap.nebula.widgets.grid;bundle-version="0.1.0",
+ com.eclipsesource.rap.punchy
 Service-Component: OSGI-INF/contribution.xml
-Import-Package: com.eclipsesource.rap.punchy

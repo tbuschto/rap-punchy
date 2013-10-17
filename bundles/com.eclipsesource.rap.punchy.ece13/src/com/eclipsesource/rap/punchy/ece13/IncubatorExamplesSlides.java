@@ -1,5 +1,6 @@
 package com.eclipsesource.rap.punchy.ece13;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.eclipsesource.rap.punchy.Presentation;
@@ -8,6 +9,18 @@ import com.eclipsesource.rap.punchy.Presentation;
 public class IncubatorExamplesSlides {
 
   public static void createSlides( Presentation presentation ) {
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
+        return "Incubator: CKEditor";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        //Composite example = new Composite( slideComposite, SWT.NONE );
+        flow( new NebulaGridExamplePage().createControl( slideComposite ), SWT.DEFAULT, 450 );
+      }
+    };
     new EceSlide( presentation ) {
       @Override
       public String getTitle() {
@@ -28,6 +41,7 @@ public class IncubatorExamplesSlides {
              new String[] {
                "GMaps Widget",
                "Charting Prototype",
+               "Tabris UI",
                "Some Community widget"
              }
             );
