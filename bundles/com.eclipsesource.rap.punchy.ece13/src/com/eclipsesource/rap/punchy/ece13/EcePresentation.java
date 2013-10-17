@@ -20,100 +20,11 @@ public class EcePresentation {
   }
 
   private static void createSlides( Presentation presentation ) {
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "Welcome";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        spacer( 100 );
-        styledText( "big", SWT.CENTER, "RAP 2.x and Beyond" );
-        spacer( 100 );
-        setListSpacing( 8 );
-        text( "Presenter:" );
-        list( "Markus Knauer, RAP Co-Lead", "Tim Buschtöns, RAP Comitter" );
-      }
-    };
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "RAP 2.0";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        toRight( image( "clients.png" ) );
-        spacer( 25 );
-        list(
-          "JSON Protocol </br>fully implemented",
-          "Tabris 1.0 Released",
-          "API Clean-Up",
-          "Client Services API",
-          "Custom Widget API",
-          "New Name: </br><big style='line-height:80px'><b>R</b>emote <b>A</b>pplication <b>P</b>latform</big>"
-        );
-      }
-    };
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "RAP 2.1 (Kepler)";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        spacer( 25 );
-        list(
-         "Released 4 months after 2.0",
-         "Many minor enahancements and fixes",
-         "Improved Multi-Tab Browsing"
-        );
-      }
-    };
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "RAP 2.2";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        spacer( 25 );
-        list(
-         "December 2013",
-         "RWT Scripting (\"ClientScripting\")",
-         "New ToolTips",
-         "Row Templates",
-         "TBA..."
-        );
-      }
-    };
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "RAP Incubator";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        setListSpacing( 10 );
-        list(
-         "What is this?",
-         "ClientScripting -> RWT Scripting",
-         "CKEditor",
-         "AutoSuggest",
-         "Nebula Grid",
-         "Beyond:",
-         new String[] {
-           "GMaps Widget",
-           "Charting Prototype",
-           "Some Community widget"
-         }
-        );
-      }
-    };
+    RAP_2_0_Slides.createSlides( presentation );
+    RAP_2_1_Slides.createSlides( presentation );
+    RAP_2_2_Slides.createSlides( presentation );
+    IncubatorIntroductionSlides.createSlides( presentation );
+    IncubatorExamplesSlides.createSlides( presentation );
     createExampleSlides( presentation );
   }
 
