@@ -18,6 +18,18 @@ public class IncubatorExamplesSlides {
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
         //Composite example = new Composite( slideComposite, SWT.NONE );
+        flow( "transparent", new CKEditorExamplePage().createControl( slideComposite ), SWT.DEFAULT, 450 );
+      }
+    };
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
+        return "Incubator: Nebula Grid";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        //Composite example = new Composite( slideComposite, SWT.NONE );
         flow( new NebulaGridExamplePage().createControl( slideComposite ), SWT.DEFAULT, 450 );
       }
     };

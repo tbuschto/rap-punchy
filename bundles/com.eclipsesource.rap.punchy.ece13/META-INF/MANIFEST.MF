@@ -9,5 +9,6 @@ Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.rap.jface,
  org.eclipse.rap.nebula.jface.gridviewer;bundle-version="0.1.0",
  org.eclipse.rap.nebula.widgets.grid;bundle-version="0.1.0",
- com.eclipsesource.rap.punchy
+ com.eclipsesource.rap.punchy,
+ org.eclipse.rap.addons.ckeditor
 Service-Component: OSGI-INF/contribution.xml
