@@ -5,6 +5,7 @@ Bundle-SymbolicName: com.eclipsesource.rap.punchy.ece13
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ECLIPSESOURCE
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,3.0.0)"
+Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.rap.jface
 Service-Component: OSGI-INF/contribution.xml
 Import-Package: com.eclipsesource.rap.punchy
