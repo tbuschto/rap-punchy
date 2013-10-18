@@ -19,12 +19,12 @@ public class EcePresentation {
 
   static void createPresentation( Composite parent ) {
     GregorianCalendar start = new GregorianCalendar();
-    start.set( GregorianCalendar.HOUR_OF_DAY, 16 );
+    start.set( GregorianCalendar.HOUR_OF_DAY, 18 );
     start.set( GregorianCalendar.MINUTE, 10 );
     start.set( GregorianCalendar.SECOND, 0 );
     start.set( GregorianCalendar.MILLISECOND, 0 );
     GregorianCalendar end = new GregorianCalendar();
-    end.set( GregorianCalendar.HOUR_OF_DAY, 17 );
+    end.set( GregorianCalendar.HOUR_OF_DAY, 19 );
     end.set( GregorianCalendar.MINUTE, 20 );
     end.set( GregorianCalendar.SECOND, 0 );
     end.set( GregorianCalendar.MILLISECOND, 0 );
@@ -32,8 +32,6 @@ public class EcePresentation {
                                                   new Point( 800, 600 ),
                                                   start.getTime(),
                                                   end.getTime() );
-    System.out.println( presentation.getTotalMinutes() );
-    System.out.println( presentation.getMinutesRemaining() );
     createSlides( presentation );
     presentation.start();
   }
@@ -44,7 +42,7 @@ public class EcePresentation {
     RAP_2_2_Slides.createSlides( presentation );
     IncubatorIntroductionSlides.createSlides( presentation );
     IncubatorExamplesSlides.createSlides( presentation );
-    createExampleSlides( presentation );
+    //createExampleSlides( presentation );
   }
 
   private static void createExampleSlides( Presentation presentation ) {

@@ -12,5 +12,7 @@ Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.0.0,3.0.0)",
  com.eclipsesource.rap.punchy,
  org.eclipse.rap.addons.ckeditor,
  org.eclipse.rap.addons.dropdown,
- org.eclipse.rap.addons.autosuggest
+ org.eclipse.rap.addons.autosuggest,
+ org.eclipse.rap.addons.fileupload,
+ org.eclipse.rap.addons.filedialog;bundle-version="0.5.0"
 Service-Component: OSGI-INF/contribution.xml
