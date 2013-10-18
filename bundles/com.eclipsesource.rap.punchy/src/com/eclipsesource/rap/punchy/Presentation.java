@@ -3,6 +3,7 @@ package com.eclipsesource.rap.punchy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -63,12 +64,17 @@ public class Presentation {
   private List<Control> menuControls = new ArrayList<Control>( 10 );
   private Table slideList;
   private Composite sideBar;
+  private final Date startTime;
+  private final Date endTime;
 
-  public Presentation( Composite parent, Point size ) {
+
+  public Presentation( Composite parent, Point size, Date start, Date end ) {
     registerResources();
     main = new Composite( parent, SWT.NONE );
     minsize = size;
     slides = new ArrayList<AbstractSlide>();
+    this.startTime = start;
+    this.endTime = end;
     createPrevButton( main );
     createStage( main );
     createWarning( parent, size );
@@ -175,6 +181,23 @@ public class Presentation {
   void addSlide( AbstractSlide slide ) {
     checkNotStarted();
     slides.add( slide );
+  }
+
+
+  public int getTotalMinutes() {
+    return ( int )( ( endTime.getTime() - startTime.getTime() ) / 60000 );
+  }
+
+  public int getMinutesRemaining() {
+    return ( int )( ( endTime.getTime() - new Date().getTime() ) / 60000 );
+  }
+
+  public int getSlidesCount() {
+    return slides.size();
+  }
+
+  public int indexOfSlide( AbstractSlide slide ) {
+    return slides.indexOf( slide );
   }
 
   private void createMenu( Composite parent ) {
@@ -479,14 +502,6 @@ public class Presentation {
       int stageWidth = Math.min( size.x, minsize.x );
       return new Point( stageWidth, stageHeight );
     }
-  }
-
-  int getSlidesCount() {
-    return slides.size();
-  }
-
-  int indexOfSlide( AbstractSlide slide ) {
-    return slides.indexOf( slide );
   }
 
 }

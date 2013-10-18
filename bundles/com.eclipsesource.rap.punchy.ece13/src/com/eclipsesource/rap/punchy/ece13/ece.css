@@ -49,3 +49,48 @@
 .punchyLeftSideBar {
   animation: flyInLeft 200ms ease-out, flyOutLeft 200ms ease-out;
 }
+
+ProgressBar.punchyProgressAhead,
+ProgressBar.punchyProgressOK,
+ProgressBar.punchyProgressBad,
+ProgressBar.punchyProgressWarn {
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid #bdbdbd;
+}
+
+ProgressBar-Indicator.punchyProgressAhead {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #ADD2FF ),
+    to( #8AA9CF )
+  );
+  opacity: 0.5;
+}
+
+ProgressBar-Indicator.punchyProgressOK {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #7DF0A7 ),
+    to( #8ACFA3 )
+  );
+  opacity: 0.5;
+}
+
+ProgressBar-Indicator.punchyProgressWarn {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #F5BA6E ),
+    to( #DECAA4 )
+  );
+  opacity: 0.5;
+}
+
+ProgressBar-Indicator.punchyProgressBad {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #E85A33 ),
+    to( #DE9E8C )
+  );
+  opacity: 0.8;
+}

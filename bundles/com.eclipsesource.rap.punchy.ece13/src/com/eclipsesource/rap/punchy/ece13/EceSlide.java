@@ -5,6 +5,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
 
 import com.eclipsesource.rap.punchy.AbstractSlide;
 import com.eclipsesource.rap.punchy.Presentation;
@@ -53,17 +54,39 @@ public abstract class EceSlide extends AbstractSlide {
 
   private void footer( Composite slideComposite ) {
     Composite footer = new Composite( slideComposite, SWT.NONE );
-    GridLayout layout = new GridLayout( 1, false );
+    GridLayout layout = new GridLayout( 3, false );
     layout.marginBottom = 4;
     layout.marginTop = 7;
     layout.marginLeft = 15;
+    layout.marginRight = 15;
+    layout.horizontalSpacing = 15;
     footer.setLayout( layout );
     footer.setBackgroundMode( SWT.INHERIT_FORCE );
-    styleAs( "footer", footer );
-    Label label = new Label( footer, SWT.LEFT );
-    label.setText( ( getSlideNumber() + 1 ) + "/" + getSlidesCount() );
-    styleAs( "footer", label );
+    Label progress = new Label( footer, SWT.LEFT );
+    progress.setText( ( getSlideNumber() + 1 ) + "/" + getSlidesCount() );
+    ProgressBar bar = new ProgressBar( footer, SWT.HORIZONTAL );
+    bar.setMaximum( getSlidesCount() - 1 );
+    bar.setSelection( getSlideNumber() );
+    GridData layoutData = new GridData( SWT.FILL, SWT.CENTER, true, true );
+    layoutData.heightHint = 10;
+    bar.setLayoutData( layoutData );
     toBottom( footer, -1, 40 );
+    Label remain = new Label( footer, SWT.LEFT );
+    remain.setText( getPresentation().getMinutesRemaining() + "m" );
+    styleAs( "footer", footer, progress, remain );
+    float minutesBySlide = ( float )getPresentation().getTotalMinutes() / getSlidesCount();
+    float timeForSlides = ( float )getPresentation().getMinutesRemaining() / minutesBySlide;
+    int slidesRemaining = getSlidesCount() - getSlideNumber();
+    float ahead = timeForSlides - slidesRemaining;
+    if( ahead > 1 ) {
+      styleAs( "progressAhead", bar );
+    } else if( ahead > -1 ) {
+      styleAs( "progressOK", bar );
+    } else if( ahead > -3 ) {
+      styleAs( "progressWarn", bar );
+    } else {
+      styleAs( "progressBad", bar );
+    }
   }
 
 }

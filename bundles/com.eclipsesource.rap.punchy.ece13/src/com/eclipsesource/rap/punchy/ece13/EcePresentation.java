@@ -1,5 +1,7 @@
 package com.eclipsesource.rap.punchy.ece13;
 
+import java.util.GregorianCalendar;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
@@ -13,8 +15,25 @@ import com.eclipsesource.rap.punchy.Presentation;
 
 public class EcePresentation {
 
+  private static GregorianCalendar now;
+
   static void createPresentation( Composite parent ) {
-    Presentation presentation = new Presentation( parent, new Point( 800, 600 ) );
+    GregorianCalendar start = new GregorianCalendar();
+    start.set( GregorianCalendar.HOUR_OF_DAY, 16 );
+    start.set( GregorianCalendar.MINUTE, 10 );
+    start.set( GregorianCalendar.SECOND, 0 );
+    start.set( GregorianCalendar.MILLISECOND, 0 );
+    GregorianCalendar end = new GregorianCalendar();
+    end.set( GregorianCalendar.HOUR_OF_DAY, 17 );
+    end.set( GregorianCalendar.MINUTE, 20 );
+    end.set( GregorianCalendar.SECOND, 0 );
+    end.set( GregorianCalendar.MILLISECOND, 0 );
+    Presentation presentation = new Presentation( parent,
+                                                  new Point( 800, 600 ),
+                                                  start.getTime(),
+                                                  end.getTime() );
+    System.out.println( presentation.getTotalMinutes() );
+    System.out.println( presentation.getMinutesRemaining() );
     createSlides( presentation );
     presentation.start();
   }

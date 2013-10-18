@@ -158,8 +158,8 @@ public class RAP_2_2_Slides {
         super.createContent( slideComposite );
         spacer( 20 );
         list(
-         "Currently 9 widgets and 19 event types supported",
-         "Widgets can not be created/disposed by Scripting",
+         "Currently 9 widgets and 19 event types",
+         "Scripting can not create/dispose widgets",
          "Some more Examples:"
         );
         Composite parent = new Composite( slideComposite, SWT.NONE );
