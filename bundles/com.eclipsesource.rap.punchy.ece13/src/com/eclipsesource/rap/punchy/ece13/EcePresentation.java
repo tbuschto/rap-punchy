@@ -29,7 +29,7 @@ public class EcePresentation {
     end.set( GregorianCalendar.SECOND, 0 );
     end.set( GregorianCalendar.MILLISECOND, 0 );
     Presentation presentation = new Presentation( parent,
-                                                  new Point( 800, 600 ),
+                                                  new Point( 1000, 750 ),
                                                   start.getTime(),
                                                   end.getTime() );
     createSlides( presentation );
@@ -40,6 +40,7 @@ public class EcePresentation {
     RAP_2_0_Slides.createSlides( presentation );
     RAP_2_1_Slides.createSlides( presentation );
     RAP_2_2_Slides.createSlides( presentation );
+    RAP_2_3_Slides.createSlides( presentation );
     IncubatorIntroductionSlides.createSlides( presentation );
     IncubatorExamplesSlides.createSlides( presentation );
     //createExampleSlides( presentation );
@@ -64,7 +65,7 @@ public class EcePresentation {
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
         spacer( 20 );
-        toRight( image( "clients.png" ) );
+        toRight( image( "images/clients.png" ) );
         spacer( 15 );
         text( 340, 380, "Text </br>that is way too is way too long and needs overflow overflow overflow overflow overflow Text that is way too long and needs overflow overflow overflow overflow " );
         text( "Moret Text that is text with text lalalaa All play and no work make me a good employee" );
