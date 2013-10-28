@@ -63,10 +63,13 @@ public class RAP_2_2_Slides {
         super.createContent( slideComposite );
         spacer( 25 );
         list(
-         "December 2013",
-         "RWT Scripting",
-         "New ToolTips",
-         "Row Templates"
+          "Scheduled for December 2013",
+          "Themes",
+          new String[] {
+            "RWT Scripting",
+            "New ToolTips",
+            "Row Templates"
+          }
         );
       }
     };
@@ -80,7 +83,7 @@ public class RAP_2_2_Slides {
         super.createContent( slideComposite );
         spacer( 20 );
         list(
-         "Formerly \"ClientScripting\" (Incubator)",
+         "Formerly \"ClientScripting\" (RAP Incubator project)",
          "SWT-Style event handler written in JavaScript",
          "Executed in the Browser (no latency)"
         );

@@ -16,11 +16,19 @@ public class RAP_2_1_Slides {
       @Override
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
-        spacer( 25 );
+        spacer( 50 );
         list(
-         "Released 4 months after 2.0",
-         "Mostly minor enahancements and fixes",
-         "Improved Multi-Tab Browsing"
+          "Released 4 months after 2.0<br>(RAP uses a 6 monthly release cycle)",
+          "Improve Web Browser Experience",
+          new String[] {
+            "Built-in support for <em>multiple browser tabs</em><br>",
+            "Terminate UISession when leaving browser page",
+            "Additional API for keyboard shortcuts<br>(mnemonics, accelerators)"
+          },
+          "Performance improvements",
+          new String[] {
+            "Using internal JSON library"
+          }
         );
       }
     };
