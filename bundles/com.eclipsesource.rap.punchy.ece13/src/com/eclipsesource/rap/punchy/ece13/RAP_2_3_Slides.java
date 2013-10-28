@@ -21,7 +21,7 @@ public class RAP_2_3_Slides {
         list(
           "RAP 2.3 is scheduled together with Eclipe Luna (June 2014)",
           "Plan not yet finalized",
-          "Depending on workload and interest: Eclipse 4?" );
+          "Depending on workload and interest: Eclipse 4" );
         image( "images/rap-e4.png", SWT.CENTER );
       }
     };

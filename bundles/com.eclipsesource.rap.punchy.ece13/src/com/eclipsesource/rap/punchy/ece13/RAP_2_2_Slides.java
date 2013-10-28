@@ -85,7 +85,7 @@ public class RAP_2_2_Slides {
         list(
          "Formerly \"ClientScripting\" (RAP Incubator project)",
          "SWT-Style event handler written in JavaScript",
-         "Executed in the Browser (no latency)"
+         "Executed in the Browser (no network latency)"
         );
       }
     };
