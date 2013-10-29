@@ -23,30 +23,6 @@ public class IncubatorIntroductionSlides {
         text( SWT.CENTER, "What is this?" );
       }
     };
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "RAP Incubator Examples";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        setListSpacing( 10 );
-        list(
-         "ClientScripting moved to core RWT Scripting",
-         "CKEditor as RichText editor",
-         "DropDown and AutoSuggest",
-         "FileUpload and FileDialog",
-         "Nebula Grid",
-         "Beyond:",
-         new String[] {
-           "GMaps widget",
-           "Charting prototype",
-           "Some community widgets"
-         }
-        );
-      }
-    };
   }
 
 }

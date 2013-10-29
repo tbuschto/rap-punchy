@@ -61,32 +61,6 @@ public class IncubatorExamplesSlides {
         flow( "transparent", new FileUploadExamplePage().createControl( slideComposite ), SWT.DEFAULT, 350 );
       }
     };
-    new EceSlide( presentation ) {
-      @Override
-      public String getTitle() {
-        return "RAP Incubator";
-      }
-      @Override
-      protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
-        setListSpacing( 10 );
-        list(
-             "What is this?",
-             "ClientScripting -> RWT Scripting",
-             "CKEditor",
-             "DropDown/AutoSuggest",
-             "FileUpload/FileDialog",
-             "Nebula Grid",
-             "Beyond:",
-             new String[] {
-               "GMaps Widget",
-               "Charting Prototype",
-               "Tabris UI",
-               "Some Community widget"
-             }
-            );
-      }
-    };
   }
 
 }
