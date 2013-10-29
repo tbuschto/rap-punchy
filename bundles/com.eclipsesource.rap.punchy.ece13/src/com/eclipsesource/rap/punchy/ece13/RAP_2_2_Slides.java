@@ -216,6 +216,19 @@ public class RAP_2_2_Slides {
         flow( "transparent", parent );
       }
     };
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
+        return "RowTemplates";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        Composite example = new Composite( slideComposite, SWT.NONE );
+        new RowTemplateDemo().createContents( example );
+        flow( "transparent", example, SWT.DEFAULT, 550 );
+      }
+    };
   }
 
   //////////////
@@ -427,23 +440,6 @@ public class RAP_2_2_Slides {
     FieldDecorationRegistry registry = FieldDecorationRegistry.getDefault();
     FieldDecoration decoration = registry.getFieldDecoration( id );
     return decoration.getImage();
-  }
-
-  private static boolean verifyDate( String date ) {
-    String[] values = date.split( "\\.", 3 );
-    boolean valid = true;
-    try {
-      if( Integer.parseInt( values[ 0 ] ) > 31 ) {
-        valid = false;
-      }
-      if( Integer.parseInt( values[ 1 ] ) > 12 ) {
-        valid = false;
-      }
-      Integer.parseInt( values[ 2 ].trim() ); // remove trailing " "
-    } catch( NumberFormatException ex ) {
-      valid = false;
-    }
-    return valid;
   }
 
 }
