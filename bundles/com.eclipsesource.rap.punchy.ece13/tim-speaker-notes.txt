@@ -1,0 +1,42 @@
+RAP 2.2
+ * More time for new UI features
+
+RWT Scripting
+ * Application is code usually executed on the server
+ * OK in most cases, but sometimes immediate feedback is essential
+
+New ToolTips
+ * Old look can still be used
+ * Specific to widget type: Appear delay, positioning, pointer, disappear conditions
+
+Row Templates
+  * Modern UIs have more complex layouts in their lists/tables
+  * Also interactive elements within an item
+  * Other elements than text and images may be possible
+
+CKEditor
+  * WYSIWYG HTML editor based on CKEditor
+  * First custom widget based on new custom widget API
+  * By default reduced feature set to reduce javascript code and UI
+  * Developers can simply restore features
+  * Currently still on github
+
+Nebula Grid
+  * Subset of the SWT Nebula Grid API
+  * Grouped columns, footer, different item heights
+  * Shares javascript code with RAP Tree/Table
+
+DropDown / AutoSuggest
+  * Aims to provide a fast, lightweight, simple to use typing assistant for RAP
+  * DropDown-only requires the application to update the list of suggestions as the user types
+  * AutoSuggest provides a JFace-Like API and filters the list of suggestions on the client
+
+FileDialog
+  * All-In-One File Upload solution
+  * SWT SingleSourcing
+  * Recently revised UI, Multiple File selection
+
+Beyond Incubator
+  * GoogleMaps widget is based on Browser widget and also runs in SWT/RCP
+  * d3 charting provides some simple diagrams in RAP, still prototype
+  * Tabris UI: Application Navigation inspired by Mobile OS, runs in browser as of Tabris 1.2
