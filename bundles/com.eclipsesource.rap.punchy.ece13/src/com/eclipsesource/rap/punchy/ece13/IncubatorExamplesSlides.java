@@ -61,6 +61,25 @@ public class IncubatorExamplesSlides {
         flow( "transparent", new FileUploadExamplePage().createControl( slideComposite ), SWT.DEFAULT, 350 );
       }
     };
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
+        return "Beyond Incubator";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        setPaddingLeft( 60 );
+        setPaddingRight( 60 );
+        toRight( text( 400, 50, SWT.CENTER, "Tabris UI" ) );
+        spacer( 20 );
+        text( 400, 40, SWT.CENTER, "GMaps Widget, d3 Widget" );
+        toRight( image( "tabrisui1.png", SWT.BORDER ) );
+        image( "gmaps.png", SWT.BORDER );
+        toRight( image( "tabrisui2.png", SWT.BORDER ) );
+        image( "d3.png", SWT.BORDER );
+      }
+    };
   }
 
 }

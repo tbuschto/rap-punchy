@@ -15,17 +15,15 @@ import com.eclipsesource.rap.punchy.Presentation;
 
 public class EcePresentation {
 
-  private static GregorianCalendar now;
-
   static void createPresentation( Composite parent ) {
     GregorianCalendar start = new GregorianCalendar();
-    start.set( GregorianCalendar.HOUR_OF_DAY, 18 );
-    start.set( GregorianCalendar.MINUTE, 10 );
+    start.set( GregorianCalendar.HOUR_OF_DAY, 11 );
+    start.set( GregorianCalendar.MINUTE, 15 );
     start.set( GregorianCalendar.SECOND, 0 );
     start.set( GregorianCalendar.MILLISECOND, 0 );
     GregorianCalendar end = new GregorianCalendar();
-    end.set( GregorianCalendar.HOUR_OF_DAY, 19 );
-    end.set( GregorianCalendar.MINUTE, 20 );
+    end.set( GregorianCalendar.HOUR_OF_DAY, 11 );
+    end.set( GregorianCalendar.MINUTE, 45 );
     end.set( GregorianCalendar.SECOND, 0 );
     end.set( GregorianCalendar.MILLISECOND, 0 );
     Presentation presentation = new Presentation( parent,

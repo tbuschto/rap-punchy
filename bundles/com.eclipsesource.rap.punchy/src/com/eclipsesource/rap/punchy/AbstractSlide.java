@@ -9,6 +9,7 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -123,7 +124,12 @@ public abstract class AbstractSlide {
     Image image = loadImage( name );
     label.setImage( image );
     label.setData( RWT.CUSTOM_VARIANT, "punchyImage" );
-    flow( label );
+    Point size = label.computeSize( SWT.DEFAULT, SWT.DEFAULT );
+    if( ( style & SWT.BORDER ) != 0 ) {
+      // somehow layout gets of by 2px?
+      size = new Point( size.x - 2, size.y - 2 );
+    }
+    flow( label, size.x, size.y );
     return label;
   }
 
