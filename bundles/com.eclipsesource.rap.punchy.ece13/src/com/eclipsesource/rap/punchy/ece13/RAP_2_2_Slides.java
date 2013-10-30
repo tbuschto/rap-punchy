@@ -184,8 +184,9 @@ public class RAP_2_2_Slides {
         super.createContent( slideComposite );
         spacer( 20 );
         list(
-          "New (default) look",
-          "Widget-specific behavior"
+          "New (default) look with pointer",
+          "Revised, widget-specific behavior",
+          "HTML/markup support planned"
         );
         Composite parent = new Composite( slideComposite, SWT.NONE );
         GridLayout layout = new GridLayout( 3, false );
@@ -220,6 +221,24 @@ public class RAP_2_2_Slides {
       @Override
       public String getTitle() {
         return "RowTemplates";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        spacer( 20 );
+        list(
+          "Custimize how tree/table items are rendered",
+          "Make text/images clickable",
+          "Pure java API, no HTML/CSS/JS",
+          "Possible future support for other widgets",
+          "Tabris support"
+        );
+      }
+    };
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
+        return "RowTemplates Example";
       }
       @Override
       protected void createContent( Composite slideComposite ) {
