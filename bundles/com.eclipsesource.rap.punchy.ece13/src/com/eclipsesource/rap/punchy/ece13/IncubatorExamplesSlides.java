@@ -17,7 +17,7 @@ public class IncubatorExamplesSlides {
       @Override
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
-        flow( "transparent", new CKEditorExamplePage().createControl( slideComposite ), SWT.DEFAULT, 450 );
+        flow( "transparent", new CKEditorExamplePage().createControl( slideComposite ), SWT.DEFAULT, 550 );
       }
     };
     new EceSlide( presentation ) {
@@ -29,7 +29,7 @@ public class IncubatorExamplesSlides {
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
         //Composite example = new Composite( slideComposite, SWT.NONE );
-        flow( new NebulaGridExamplePage().createControl( slideComposite ), SWT.DEFAULT, 450 );
+        flow( new NebulaGridExamplePage().createControl( slideComposite ), SWT.DEFAULT, 550 );
       }
     };
     new EceSlide( presentation ) {
@@ -78,6 +78,23 @@ public class IncubatorExamplesSlides {
         image( "gmaps.png", SWT.BORDER );
         toRight( image( "tabrisui2.png", SWT.BORDER ) );
         image( "d3.png", SWT.BORDER );
+      }
+    };
+    new EceSlide( presentation ) {
+      @Override
+      public String getTitle() {
+        return "Links";
+      }
+      @Override
+      protected void createContent( Composite slideComposite ) {
+        super.createContent( slideComposite );
+        setPaddingLeft( 80 );
+        image( "addons.png" );
+        setPaddingLeft( 350 );
+        spacer( -450 );
+        list( "<a href='http://eclipse.org/rap/incubator/'>http://eclipse.org/rap/incubator/</a>" );
+        spacer( 240 );
+        list( "<a href='https://wiki.eclipse.org/RAP/Add-Ons'>http://wiki.eclipse.org/RAP/Add-Ons</a>" );
       }
     };
   }
