@@ -230,9 +230,9 @@ public class RAP_2_2_Slides {
         super.createContent( slideComposite );
         spacer( 20 );
         list(
-          "Custimize how tree/table items are rendered",
+          "Customize how tree/table items are rendered",
           "Make text/images clickable",
-          "Pure java API, no HTML/CSS/JS",
+          "Pure Java API, no HTML/CSS/JS",
           "Possible future support for other widgets",
           "Tabris support"
         );
