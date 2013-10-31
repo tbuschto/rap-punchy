@@ -146,6 +146,7 @@ public class RAP_2_2_Slides {
           "  }"
          );
         setPaddingLeft( 30 );
+        spacer( 20 );
         text( "Listener in JavaScript:" );
         setPaddingLeft( 60 );
         snippet( "javascript", SWT.DEFAULT, 160, readFile( "DigitsOnly.js" ) );
@@ -165,6 +166,7 @@ public class RAP_2_2_Slides {
          "Scripting can not create/dispose widgets",
          "Some more Examples:"
         );
+        spacer( 20 );
         Composite parent = new Composite( slideComposite, SWT.NONE );
         parent.setLayout( new GridLayout( 2, false ) );
         addDateFieldExample( parent );
@@ -188,6 +190,7 @@ public class RAP_2_2_Slides {
           "Revised, widget-specific behavior",
           "HTML/markup support planned"
         );
+        spacer( 20 );
         Composite parent = new Composite( slideComposite, SWT.NONE );
         GridLayout layout = new GridLayout( 3, false );
         layout.verticalSpacing = 10;

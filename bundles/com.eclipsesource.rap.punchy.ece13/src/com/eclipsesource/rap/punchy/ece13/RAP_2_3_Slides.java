@@ -17,7 +17,8 @@ public class RAP_2_3_Slides {
       @Override
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
-        spacer( 25 );
+        setListSpacing( 5 );
+        spacer( -5 );
         list(
           "RAP 2.3 is scheduled together with Eclipe Luna (June 2014)",
           "Plan not yet finalized",

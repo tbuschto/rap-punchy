@@ -299,8 +299,9 @@ public abstract class AbstractSlide {
     htmlBuilder.append( "<ul " + style + ">" );
     boolean merge = false;
     for( int i = 0; i < listItems.length; i++ ) {
+      int actualSpacing = i == listItems.length - 1 ? 0 : listSpacing;
       if( !merge ) {
-        htmlBuilder.append( "<li style=\"margin-bottom:" + listSpacing  + "px\" >" );
+        htmlBuilder.append( "<li style=\"margin-bottom:" + actualSpacing  + "px\" >" );
       }
       merge = false;
       if( listItems[ i ] instanceof String[] ) {

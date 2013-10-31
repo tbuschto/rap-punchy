@@ -12,15 +12,15 @@ public class RAP_2_0_Slides {
     new EceSlide( presentation ) {
       @Override
       public String getTitle() {
-        return "";
+        return "Welcome";
       }
       @Override
       protected void createContent( Composite slideComposite ) {
-        super.createContent( slideComposite );
         spacer( 100 );
         styledText( "big", SWT.CENTER, "What's new in RAP 2.0, 2.1, 2.2" );
         styledText( "big", SWT.CENTER, "and what's beyond?" );
         spacer( 100 );
+        setPaddingLeft( 100 );
         setListSpacing( 8 );
         text( "Presenters" );
         list( "Markus Knauer, RAP Co-Lead, @mknauer23", "Tim Buschtöns, RAP Comitter, @tbuschto" );
@@ -37,9 +37,10 @@ public class RAP_2_0_Slides {
         text( "RAP 1.x was known as \"RCP for the web browser\"." );
         list( "we continue to support this",
             "extend the idea of <em>Single Sourcing</em>" );
-        spacer(15);
+        spacer(10);
         text( "RAP 2.x is an open platform for remote applications." );
         list( "Rename project to <em>Remote Application Platform</em>" );
+        spacer(10);
         image( "images/clients.png", SWT.CENTER );
       }
     };
@@ -87,7 +88,7 @@ public class RAP_2_0_Slides {
         text( "Exemplary JSON message" );
         spacer( 50 );
         snippet(
-            "json", SWT.DEFAULT, 220,
+            "json", SWT.DEFAULT, 240,
             "  {\n" +
             "    \"head\": {\n" +
             "      \"requestCounter\": 1\n" +
@@ -116,7 +117,7 @@ public class RAP_2_0_Slides {
         super.createContent( slideComposite );
         text( "Getting the Client" );
         snippet(
-            "java", SWT.DEFAULT, 80,
+            "java", SWT.DEFAULT, 90,
             "Client client = RWT.getClient()\n" +
             "if( client instanceof WebClient ) {\n" +
             "  // WebClient is the default\n" +
@@ -125,14 +126,14 @@ public class RAP_2_0_Slides {
         spacer( 20 );
         text( "Running JavaScript on the client" );
         snippet(
-            "java", SWT.DEFAULT, 50,
+            "java", SWT.DEFAULT, 60,
             "JavaScriptExecutor executor = client.getService( JavaScriptExecutor.class );\n" +
             "executor.execute( \"document.title = 'New Title'\" );"
         );
         spacer( 20 );
         text( "Retrieve client details" );
         snippet(
-            "java", SWT.DEFAULT, 70,
+            "java", SWT.DEFAULT, 80,
             "ClientInfo clientInfo = client.getService( ClientInfo.class );\n" +
             "int timezoneOffset = clientInfo.getTimezoneOffset();\n" +
             "Locale clientLocale = clientInfo.getLocale();"
@@ -140,7 +141,7 @@ public class RAP_2_0_Slides {
         spacer( 20 );
         text( "Add entries to the Browser's history" );
         snippet(
-            "java", SWT.DEFAULT, 70,
+            "java", SWT.DEFAULT, 80,
             "BrowserNavigation navigation = client.getService( BrowserNavigation.class );\n" +
             "navigation.pushState( \"main\", \"Main View\" );\n" +
             "navigation.addBrowserNavigationListener( listener );"
