@@ -90,7 +90,7 @@ public class RAP_2_0_Slides {
             "json", SWT.DEFAULT, 220,
             "  {\n" +
             "    \"head\": {\n" +
-            "      \"requestCounter\": 1\n" +
+            "      \"requestCounter\": 23\n" +
             "    },\n" +
             "    \"operations\": [\n" +
             "      [ \"create\", \"w4\", \"rwt.widgets.Button\", {\n" +
@@ -103,6 +103,7 @@ public class RAP_2_0_Slides {
             "  }\n"
             );
         spacer( 50 );
+        text( "create, set, destroy, call, listen, notify" );
         text( "http://wiki.eclipse.org/RAP/Protocol" );
       };
     };
@@ -123,19 +124,19 @@ public class RAP_2_0_Slides {
             "}"
         );
         spacer( 20 );
+        text( "Retrieve client details" );
+        snippet(
+            "java", SWT.DEFAULT, 70,
+            "ClientInfo clientInfo = client.getService( ClientInfo.class );\n" +
+                "int timezoneOffset = clientInfo.getTimezoneOffset();\n" +
+                "Locale clientLocale = clientInfo.getLocale();"
+            );
+        spacer( 20 );
         text( "Running JavaScript on the client" );
         snippet(
             "java", SWT.DEFAULT, 50,
             "JavaScriptExecutor executor = client.getService( JavaScriptExecutor.class );\n" +
             "executor.execute( \"document.title = 'New Title'\" );"
-        );
-        spacer( 20 );
-        text( "Retrieve client details" );
-        snippet(
-            "java", SWT.DEFAULT, 70,
-            "ClientInfo clientInfo = client.getService( ClientInfo.class );\n" +
-            "int timezoneOffset = clientInfo.getTimezoneOffset();\n" +
-            "Locale clientLocale = clientInfo.getLocale();"
         );
         spacer( 20 );
         text( "Add entries to the Browser's history" );
