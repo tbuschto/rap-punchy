@@ -10,11 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.rap.punchy.ece13;
 
-import org.eclipse.rap.rwt.internal.template.Cell.CellAlignment;
-import org.eclipse.rap.rwt.internal.template.ImageCell;
-import org.eclipse.rap.rwt.internal.template.ImageCell.ScaleMode;
-import org.eclipse.rap.rwt.internal.template.RowTemplate;
-import org.eclipse.rap.rwt.internal.template.TextCell;
+import org.eclipse.rap.rwt.template.ImageCell;
+import org.eclipse.rap.rwt.template.ImageCell.ScaleMode;
+import org.eclipse.rap.rwt.template.Template;
+import org.eclipse.rap.rwt.template.TextCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -23,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 @SuppressWarnings("restriction")
-public class PrettyTemplate extends RowTemplate {
+public class PrettyTemplate extends Template {
   private static final String MY_FONT = "Tahoma, Geneva, sans-serif";
 
   public PrettyTemplate( Font defaultFont ) {
@@ -41,10 +40,10 @@ public class PrettyTemplate extends RowTemplate {
 
   private void createArrowIconCell() {
     ImageCell arrow = new ImageCell( this );
-    arrow.setAlignment( CellAlignment.RIGHT );
+    arrow.setHorizontalAlignment( SWT.RIGHT );
     final Image arrowImage = new Image( Display.getCurrent(),
                                         PrettyTemplate.class.getResourceAsStream( "/right.png" ) );
-    arrow.setDefaultImage( arrowImage );
+    arrow.setImage( arrowImage );
     arrow.setTop( 8 );
     arrow.setWidth( 48 );
     arrow.setRight( 8 );
@@ -55,7 +54,8 @@ public class PrettyTemplate extends RowTemplate {
 
   private void createLastNameCell() {
     TextCell lastNameCell = new TextCell( this );
-    lastNameCell.setAlignment( CellAlignment.RIGHT, CellAlignment.BOTTOM );
+    lastNameCell.setHorizontalAlignment( SWT.LEFT );
+    lastNameCell.setVerticalAlignment( SWT.BOTTOM );
     lastNameCell.setBindingIndex( 1 );
     lastNameCell.setLeft( 60 );
     lastNameCell.setTop( 5 );
@@ -70,7 +70,7 @@ public class PrettyTemplate extends RowTemplate {
     TextCell firstNameCell = new TextCell( this );
     Font font = new Font( Display.getCurrent(), new FontData( MY_FONT, 14, SWT.NORMAL ) );
     firstNameCell.setFont( font );
-    firstNameCell.setAlignment( CellAlignment.LEFT );
+    firstNameCell.setHorizontalAlignment( SWT.LEFT );
     firstNameCell.setBindingIndex( 0 );
     firstNameCell.setLeft( 60 );
     firstNameCell.setTop( 30 );
@@ -82,8 +82,8 @@ public class PrettyTemplate extends RowTemplate {
     TextCell phoneLabelCell = new TextCell( this );
     Font font = new Font( Display.getCurrent(), new FontData( MY_FONT, 14, SWT.BOLD ) );
     phoneLabelCell.setFont( font );
-    phoneLabelCell.setAlignment( CellAlignment.LEFT );
-    phoneLabelCell.setDefaultText( "Phone:" );
+    phoneLabelCell.setHorizontalAlignment( SWT.LEFT );
+    phoneLabelCell.setText( "Phone:" );
     phoneLabelCell.setLeft( 250 );
     phoneLabelCell.setTop( 30 );
     phoneLabelCell.setRight( 8 );
@@ -94,7 +94,7 @@ public class PrettyTemplate extends RowTemplate {
     TextCell phoneCell = new TextCell( this );
     Font font = new Font( Display.getCurrent(), new FontData( MY_FONT, 14, SWT.NORMAL ) );
     phoneCell.setFont( font );
-    phoneCell.setAlignment( CellAlignment.LEFT );
+    phoneCell.setHorizontalAlignment( SWT.LEFT );
     phoneCell.setBindingIndex( 2 );
     phoneCell.setLeft( 310 );
     phoneCell.setTop( 30 );
@@ -108,8 +108,8 @@ public class PrettyTemplate extends RowTemplate {
     TextCell phoneLabelCell = new TextCell( this );
     Font font = new Font( Display.getCurrent(), new FontData( MY_FONT, 14, SWT.BOLD ) );
     phoneLabelCell.setFont( font );
-    phoneLabelCell.setAlignment( CellAlignment.LEFT );
-    phoneLabelCell.setDefaultText( "E-Mail:" );
+    phoneLabelCell.setHorizontalAlignment( SWT.LEFT );
+    phoneLabelCell.setText( "E-Mail:" );
     phoneLabelCell.setLeft( 250 );
     phoneLabelCell.setTop( 8 );
     phoneLabelCell.setRight( 8 );
@@ -120,7 +120,7 @@ public class PrettyTemplate extends RowTemplate {
     TextCell phoneCell = new TextCell( this );
     Font font = new Font( Display.getCurrent(), new FontData( MY_FONT, 14, SWT.NORMAL ) );
     phoneCell.setFont( font );
-    phoneCell.setAlignment( CellAlignment.LEFT );
+    phoneCell.setHorizontalAlignment( SWT.LEFT );
     phoneCell.setBindingIndex( 3 );
     phoneCell.setLeft( 310 );
     phoneCell.setTop( 8 );
@@ -132,7 +132,8 @@ public class PrettyTemplate extends RowTemplate {
 
   private void createImageCell() {
     ImageCell imageCell = new ImageCell( this );
-    imageCell.setAlignment( CellAlignment.BOTTOM, CellAlignment.TOP );
+    imageCell.setHorizontalAlignment( SWT.CENTER );
+    imageCell.setVerticalAlignment( SWT.BOTTOM );
     imageCell.setBindingIndex( 0 );
     imageCell.setTop( 4 );
     imageCell.setLeft( 4 );

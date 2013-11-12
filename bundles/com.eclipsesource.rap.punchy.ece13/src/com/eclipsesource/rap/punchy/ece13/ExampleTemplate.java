@@ -10,11 +10,10 @@
  ******************************************************************************/
 package com.eclipsesource.rap.punchy.ece13;
 
-import org.eclipse.rap.rwt.internal.template.Cell.CellAlignment;
-import org.eclipse.rap.rwt.internal.template.ImageCell;
-import org.eclipse.rap.rwt.internal.template.ImageCell.ScaleMode;
-import org.eclipse.rap.rwt.internal.template.RowTemplate;
-import org.eclipse.rap.rwt.internal.template.TextCell;
+import org.eclipse.rap.rwt.template.ImageCell;
+import org.eclipse.rap.rwt.template.ImageCell.ScaleMode;
+import org.eclipse.rap.rwt.template.Template;
+import org.eclipse.rap.rwt.template.TextCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -22,12 +21,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
 @SuppressWarnings("restriction")
-public class ExampleTemplate extends RowTemplate {
+public class ExampleTemplate extends Template {
   public ExampleTemplate( Font defaultFont ) {
     super();
     Display display = Display.getCurrent();
     ImageCell imageCell = new ImageCell( this );
-    imageCell.setAlignment( CellAlignment.BOTTOM, CellAlignment.TOP );
+    imageCell.setHorizontalAlignment( SWT.BOTTOM );
     imageCell.setBindingIndex( 0 );
     imageCell.setTop( 4 );
     imageCell.setLeft( 4 );
@@ -37,7 +36,8 @@ public class ExampleTemplate extends RowTemplate {
     imageCell.setName( "face" );
     imageCell.setScaleMode( ScaleMode.NONE );
     TextCell firstNameCell = new TextCell( this );
-    firstNameCell.setAlignment( CellAlignment.RIGHT, CellAlignment.BOTTOM );
+    firstNameCell.setHorizontalAlignment( SWT.RIGHT );
+    firstNameCell.setVerticalAlignment( SWT.BOTTOM );
     firstNameCell.setBindingIndex( 0 );
     firstNameCell.setForeground( display.getSystemColor( SWT.COLOR_DARK_RED ) );
     firstNameCell.setBackground( display.getSystemColor( SWT.COLOR_GRAY ) );
@@ -55,7 +55,7 @@ public class ExampleTemplate extends RowTemplate {
     Font font = new Font( display, fontData );
     firstNameCell.setFont( font );
     TextCell lastNameCell = new TextCell( this );
-    lastNameCell.setAlignment( CellAlignment.LEFT );
+    lastNameCell.setHorizontalAlignment( SWT.LEFT );
     lastNameCell.setBindingIndex( 1 );
     lastNameCell.setLeft( 90 );
     lastNameCell.setTop( 50 );
@@ -72,14 +72,14 @@ public class ExampleTemplate extends RowTemplate {
     likeCell.setWidth( 80 );
     likeCell.setBottom( 2 );
     likeCell.setHeight( 20 );
-    likeCell.setDefaultText( "Like On FB" );
+    likeCell.setText( "Like On FB" );
     likeCell.setName( "like" );
     likeCell.setSelectable( true );
     ImageCell phone = new ImageCell( this );
-    phone.setAlignment( CellAlignment.RIGHT );
+    phone.setHorizontalAlignment( SWT.RIGHT );
     final Image phoneImage = new Image( display,
                                         ExampleTemplate.class.getResourceAsStream( "/phone.png" ) );
-    phone.setDefaultImage( phoneImage );
+    phone.setImage( phoneImage );
     phone.setTop( 8 );
     phone.setWidth( 48 );
     phone.setRight( 16 );

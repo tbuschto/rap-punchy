@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.rap.rwt.client.service.UrlLauncher;
-import org.eclipse.rap.rwt.internal.template.RowTemplate;
+import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.rap.rwt.widgets.DialogUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -85,7 +85,7 @@ public class RowTemplateDemo extends AbstractEntryPoint {
   private Listener createGrid;
   private Combo templateCombo;
   private Integer[] templateHeights;
-  private RowTemplate[] templates;
+  private Template[] templates;
 
   @Override
   protected void createContents( final Composite parent ) {
@@ -114,7 +114,7 @@ public class RowTemplateDemo extends AbstractEntryPoint {
     templateCombo = new Combo( parent, SWT.READ_ONLY );
     templateCombo.setItems( new String[] { "no template", "PrettyTemplate", "ExampleTemplate" } );
     Font defaultFont = parent.getFont();
-    templates = new RowTemplate[] {
+    templates = new Template[] {
       null,
       new PrettyTemplate( defaultFont ),
       new ExampleTemplate( defaultFont )
@@ -131,7 +131,7 @@ public class RowTemplateDemo extends AbstractEntryPoint {
     createTable( parent );
     exampleControl.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     int tempalteIndex = templateCombo.getSelectionIndex();
-    exampleControl.setData( RowTemplate.ROW_TEMPLATE, templates[ tempalteIndex ] );
+    exampleControl.setData( RWT.ROW_TEMPLATE, templates[ tempalteIndex ] );
     exampleControl.setData( RWT.CUSTOM_ITEM_HEIGHT, templateHeights[ tempalteIndex ] );
     exampleControl.moveAbove( null );
   }
