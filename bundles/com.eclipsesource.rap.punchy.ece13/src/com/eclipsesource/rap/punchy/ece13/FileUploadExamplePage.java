@@ -113,7 +113,7 @@ public class FileUploadExamplePage {
   private void showUploadResults( FileDialog fileDialog ) {
     String[] selectedFiles = fileDialog.getFileNames();
     for( String fileName : selectedFiles ) {
-      addToLog( "received: " + new File( fileName ).getName() );
+      addToLog( "received: " + new File( fileName ).getAbsolutePath() );
     }
   }
 
