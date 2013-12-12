@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
@@ -98,7 +99,7 @@ public class RAP_2_2_Slides {
       protected void createContent( Composite slideComposite ) {
         super.createContent( slideComposite );
         spacer( 10 );
-        list( "Input Validation (digity only) in Java:" );
+        list( "Input Validation (digits only) in Java:" );
         setPaddingLeft( 60 );
         Text text1 = new Text( slideComposite, SWT.BORDER );
         text1.addListener( SWT.Modify, new DigitsOnlyListener() );
@@ -188,7 +189,7 @@ public class RAP_2_2_Slides {
         list(
           "New (default) look with pointer",
           "Revised, widget-specific behavior",
-          "HTML/markup support planned"
+          "HTML/markup support enabled"
         );
         spacer( 20 );
         Composite parent = new Composite( slideComposite, SWT.NONE );
@@ -435,7 +436,8 @@ public class RAP_2_2_Slides {
   private static Button createButton( Composite composite, String text ) {
     Button ok = new Button( composite, SWT.PUSH );
     ok.setText( text );
-    ok.setToolTipText( "This is OK!" );
+    ok.setData( RWT.TOOLTIP_MARKUP_ENABLED, Boolean.TRUE );
+    ok.setToolTipText( "This is an OK tooltip<br/><br/><i>with</i> <b>some</b> <big>markup</big>" );
     return ok;
   }
 
