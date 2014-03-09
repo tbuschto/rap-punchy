@@ -69,7 +69,8 @@ public class RAP_2_2_Slides {
           new String[] {
             "RWT Scripting",
             "New ToolTips",
-            "Row Templates"
+            "Row Templates",
+            "Virtual Table improvements"
           }
         );
       }

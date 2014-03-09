@@ -17,13 +17,13 @@ public class RAP_2_0_Slides {
       @Override
       protected void createContent( Composite slideComposite ) {
         spacer( 100 );
-        styledText( "big", SWT.CENTER, "What's new in RAP 2.0, 2.1, 2.2" );
-        styledText( "big", SWT.CENTER, "and what's beyond?" );
-        spacer( 100 );
+        styledText( "big", SWT.CENTER, "Hand-picked Highlights" );
+        styledText( "big", SWT.CENTER, "from Eclipse RAP" );
+        spacer( 200 );
         setPaddingLeft( 100 );
         setListSpacing( 8 );
-        text( "Presenters" );
-        list( "Markus Knauer, RAP Co-Lead, @mknauer23", "Tim Buschtöns, RAP Comitter, @tbuschto" );
+        text( "Presenter" );
+        text( "Markus Knauer, RAP Co-Lead, @mknauer23" );
       }
     };
     new EceSlide(presentation) {
