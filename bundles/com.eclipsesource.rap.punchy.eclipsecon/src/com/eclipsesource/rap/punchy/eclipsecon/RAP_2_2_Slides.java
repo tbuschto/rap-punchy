@@ -64,7 +64,7 @@ public class RAP_2_2_Slides {
         super.createContent( slideComposite );
         spacer( 25 );
         list(
-          "Scheduled for December 2013",
+          "December 2013",
           "Themes",
           new String[] {
             "RWT Scripting",

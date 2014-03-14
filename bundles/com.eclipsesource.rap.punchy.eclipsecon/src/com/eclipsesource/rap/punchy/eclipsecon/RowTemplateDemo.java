@@ -35,9 +35,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.TableItem;
 
-@SuppressWarnings("restriction")
 public class RowTemplateDemo extends AbstractEntryPoint {
 
+  @SuppressWarnings("serial")
   private final class SelectionListener extends SelectionAdapter {
 
     private final Composite parent;
